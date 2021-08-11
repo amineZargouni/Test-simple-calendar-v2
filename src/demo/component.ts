@@ -6,16 +6,16 @@ import {
 } from '@angular/core';
 import { map } from 'rxjs/operators';
 
-import { HttpClient,  } from '@angular/common/http';
+import { HttpClient, } from '@angular/common/http';
 
 import {
-  
-  
+
+
   subDays,
   addDays,
-  
 
-  
+
+
   addHours,
 } from 'date-fns';
 import {
@@ -41,6 +41,8 @@ import {
   CalendarView,
 } from 'angular-calendar';
 import { WebSocketAPI } from './WebSocketAPI';
+import { EventServiceService } from './services/event-service.service';
+import { env } from 'process';
 
 const colors: any = {
   red: {
@@ -62,7 +64,7 @@ interface Film {
   text: string;
   day: string;
   reminder: boolean,
-  start: string
+  start: Date
 }
 
 
@@ -82,7 +84,7 @@ export class DemoComponent {
   name: string | undefined;
   events$!: Observable<CalendarEvent<{ film: Film; }>[]>;
   events!: CalendarEvent<{ film: Film; }>[];
-  
+
 
   ngOnInit() {
     this.fetchEvents();
@@ -181,11 +183,11 @@ export class DemoComponent {
   ];
  */
 
-  
+
 
   activeDayIsOpen: boolean = true;
 
-  constructor(private modal: NgbModal,private http: HttpClient) { }
+  constructor(private modal: NgbModal, private http: HttpClient, private eventService: EventServiceService) { }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
     if (isSameMonth(date, this.viewDate)) {
@@ -214,10 +216,9 @@ export class DemoComponent {
       day: endOfDay,
     }[this.view];
 
-    
 
-    this.events$ = this.http
-      .get('http://localhost:5000/events')
+
+    this.events$ = this.eventService.getEvents()
       .pipe(
         map((res: any) => {
 
@@ -239,8 +240,8 @@ export class DemoComponent {
         })
       );
 
-      this.events$.subscribe((ev)=>(this.events = ev));
-      console.log(this.events);
+    this.events$.subscribe((ev) => (this.events = ev));
+    console.log(this.events);
   }
 
   eventTimesChanged({
@@ -248,19 +249,41 @@ export class DemoComponent {
     newStart,
     newEnd,
   }: CalendarEventTimesChangedEvent): void {
+
+
+
     this.events = this.events.map((iEvent) => {
+
+
       if (iEvent === event) {
+        const film: Film = {
+          id: event.meta.film.id,
+          text: event.meta.film.text,
+          day:event.meta.film.day ,
+          reminder: event.meta.film.reminder,
+          start: newStart
+        }
+
+
+
+        this.eventService.updateEvent(film).subscribe();
         return {
           ...event,
           start: newStart,
           end: newEnd,
+
+
         };
+
+        
       }
+
+
       return iEvent;
     });
     this.handleEvent('Dropped or resized', event);
 
-    this.sendMessage("action happened to "+event.title);
+    this.sendMessage("action happened to " + event.title);
   }
 
   handleEvent(action: string, event: CalendarEvent): void {
