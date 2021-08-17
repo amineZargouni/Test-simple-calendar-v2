@@ -123,6 +123,7 @@
         <th>Starts at</th>
         <th>Ends at</th>
         <th>Remove</th>
+        <th>Update</th>
       </tr>
     </thead>
 
@@ -183,6 +184,11 @@
         <td>
           <button class="btn btn-danger" (click)="deleteEvent(event)">
             Delete
+          </button>
+        </td>
+        <td>
+          <button class="btn btn-secondary" (click)="updateEvent(event)">
+            Update
           </button>
         </td>
       </tr>

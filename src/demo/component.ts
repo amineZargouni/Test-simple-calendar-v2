@@ -312,6 +312,20 @@ export class DemoComponent {
     this.events = this.events.filter((event) => event !== eventToDelete);
   }
 
+  updateEvent(eventToUpdate: CalendarEvent) {
+    /* this.events = this.events.filter((event) => event !== eventToDelete); */
+
+    const film: Film = {
+      id: eventToUpdate.meta.film.id,
+      text: eventToUpdate.meta.film.text,
+      day:eventToUpdate.meta.film.day ,
+      reminder: eventToUpdate.meta.film.reminder,
+      start: eventToUpdate.start
+    }
+    
+    this.eventService.updateEvent(film).subscribe();
+  }
+
   setView(view: CalendarView) {
     this.view = view;
   }
