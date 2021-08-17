@@ -310,6 +310,7 @@ export class DemoComponent {
 
   deleteEvent(eventToDelete: CalendarEvent) {
     this.events = this.events.filter((event) => event !== eventToDelete);
+    this.eventService.deleteEvent(eventToDelete.meta.film).subscribe();
   }
 
   updateEvent(eventToUpdate: CalendarEvent) {

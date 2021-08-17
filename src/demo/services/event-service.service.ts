@@ -37,4 +37,10 @@ export class EventServiceService {
     const url = `${this.apiUrl}/${event.id}`;
     return this.http.put<Film>(url,event,httpOptions)
   }
+
+  deleteEvent(event:Film):Observable<Film> {
+    const url = `${this.apiUrl}/${event.id}`;
+        return this.http.delete<Film>(url);
+  }
+
 }
