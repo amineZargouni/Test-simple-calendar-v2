@@ -134,7 +134,7 @@
             type="text"
             class="form-control"
             [(ngModel)]="event.title"
-            (keyup)="refresh.next()"
+            (keyup)="refresh.next();updateEvent(event)"
           />
         </td>
         <td>
@@ -157,7 +157,7 @@
             type="text"
             mwlFlatpickr
             [(ngModel)]="event.start"
-            (ngModelChange)="refresh.next()"
+            (ngModelChange)="refresh.next();updateEvent(event)"
             [altInput]="true"
             [convertModelValue]="true"
             [enableTime]="true"
@@ -172,7 +172,7 @@
             type="text"
             mwlFlatpickr
             [(ngModel)]="event.end"
-            (ngModelChange)="refresh.next()"
+            (ngModelChange)="refresh.next();updateEvent(event)"
             [altInput]="true"
             [convertModelValue]="true"
             [enableTime]="true"
@@ -186,11 +186,11 @@
             Delete
           </button>
         </td>
-        <td>
+        <!-- <td>
           <button class="btn btn-secondary" (click)="updateEvent(event)">
             Update
           </button>
-        </td>
+        </td> -->
       </tr>
     </tbody>
   </table>

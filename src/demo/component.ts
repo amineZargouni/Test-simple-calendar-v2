@@ -317,7 +317,7 @@ export class DemoComponent {
 
     const film: Film = {
       id: eventToUpdate.meta.film.id,
-      text: eventToUpdate.meta.film.text,
+      text: eventToUpdate.title,
       day:eventToUpdate.meta.film.day ,
       reminder: eventToUpdate.meta.film.reminder,
       start: eventToUpdate.start

@@ -2,10 +2,10 @@
   "events": [
     {
       "id": 1,
-      "text": "Doctors Appointment",
+      "text": "Doctors Appointmentaa",
       "day": "May 5th at 2:30pm",
       "reminder": true,
-      "start": "2021-08-25T00:00:00.000Z"
+      "start": "2021-08-18T00:00:00.000Z"
     },
     {
       "id": 2,
