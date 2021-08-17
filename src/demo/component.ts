@@ -292,6 +292,8 @@ export class DemoComponent {
   }
 
   addEvent(): void {
+
+    
     this.events = [
       ...this.events,
       {
@@ -304,7 +306,11 @@ export class DemoComponent {
           beforeStart: true,
           afterEnd: true,
         },
+      
       },
+      
+    
+      
     ];
   }
 

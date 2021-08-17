@@ -43,4 +43,8 @@ export class EventServiceService {
         return this.http.delete<Film>(url);
   }
 
+  addEvent(event:Film):Observable<Film>{
+    return this.http.post<Film>(this.apiUrl,event,httpOptions);
+  }
+
 }
