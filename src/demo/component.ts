@@ -60,7 +60,7 @@ const colors: any = {
 };
 
 interface Film {
-  id: number;
+  id?: number;
   text: string;
   day: string;
   reminder: boolean,
@@ -71,7 +71,7 @@ interface Film {
 
 @Component({
   selector: 'mwl-demo-component',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+ /*  changeDetection: ChangeDetectionStrategy.OnPush, */
   styleUrls: ['styles.css'],
   templateUrl: 'template.html',
 })
@@ -83,12 +83,12 @@ export class DemoComponent {
   greeting: any;
   name: string | undefined;
   events$!: Observable<CalendarEvent<{ film: Film; }>[]>;
-  events!: CalendarEvent<{ film: Film; }>[];
+  events: CalendarEvent<{ film: Film; }>[] = [];
 
 
   ngOnInit() {
     this.fetchEvents();
-    this.connect();
+   /*  this.connect(); */
   }
 
   connect() {
@@ -225,6 +225,7 @@ export class DemoComponent {
           console.log(res)
           return res.map((film: Film) => {
             return {
+              id:film.id,
               title: film.text,
               start: new Date(
                 film.start
@@ -293,10 +294,28 @@ export class DemoComponent {
 
   addEvent(): void {
 
+    const film = {
+      
+      text: 'New event',
+      day:"test",
+      reminder: true,
+      start: startOfDay(new Date()),
+    }
     
-    this.events = [
-      ...this.events,
-      {
+    
+
+    
+
+
+
+    this.eventService.addEvent(film).subscribe((film)=>{
+      console.log("meeh")
+
+      
+      
+      
+      this.events.push({
+        id:film.id,
         title: 'New event',
         start: startOfDay(new Date()),
         end: endOfDay(new Date()),
@@ -306,17 +325,21 @@ export class DemoComponent {
           beforeStart: true,
           afterEnd: true,
         },
+        meta: {
+          film,
+        },
       
-      },
+      })
       
+
+    } 
     
       
-    ];
-  }
+    )  }
 
   deleteEvent(eventToDelete: CalendarEvent) {
-    this.events = this.events.filter((event) => event !== eventToDelete);
-    this.eventService.deleteEvent(eventToDelete.meta.film).subscribe();
+    
+    this.eventService.deleteEvent(eventToDelete.meta.film).subscribe(()=>this.events = this.events.filter((event) => event !== eventToDelete));
   }
 
   updateEvent(eventToUpdate: CalendarEvent) {
