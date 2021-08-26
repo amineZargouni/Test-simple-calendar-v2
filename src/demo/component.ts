@@ -363,4 +363,6 @@ export class DemoComponent {
   closeOpenMonthViewDay() {
     this.activeDayIsOpen = false;
   }
+
+  //select people
 }
