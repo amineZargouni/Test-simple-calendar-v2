@@ -43,7 +43,19 @@ import {
 import { WebSocketAPI } from './WebSocketAPI';
 import { EventServiceService } from './services/event-service.service';
 import { env } from 'process';
+import { Content } from '@angular/compiler/src/render3/r3_ast';
+import { FormControl } from '@angular/forms';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
 
+
+import { ElementRef} from '@angular/core';
+import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
+import {MatChipInputEvent} from '@angular/material/chips';
+import { startWith} from 'rxjs/operators';
+
+interface Fruit {
+  name: string;
+}
 const colors: any = {
   red: {
     primary: '#ad2121',
@@ -59,36 +71,49 @@ const colors: any = {
   },
 };
 
-interface Film {
+interface Meeting {
   id?: number;
   text: string;
   day: string;
   reminder: boolean,
-  start: Date
+  start: Date,
+  end?:Date
 }
 
 
 
 @Component({
   selector: 'mwl-demo-component',
- /*  changeDetection: ChangeDetectionStrategy.OnPush, */
+  /*  changeDetection: ChangeDetectionStrategy.OnPush, */
   styleUrls: ['styles.css'],
   templateUrl: 'template.html',
 })
 export class DemoComponent {
-  @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any> | undefined;
+  selectable = true;
+  removable = true;
+  separatorKeysCodes: number[] = [ENTER, COMMA];
+  fruitCtrl = new FormControl();
+  filteredFruits!: Observable<string[]>;
+  fruits: string[] = ['Lemon'];
+  allFruits: string[] = ['Apple', 'Lemon', 'Lime', 'Orange', 'Strawberry', 'Lemon', 'Lime', 'Orange', 'Strawberry', 'Lemon', 'Lime', 'Orange', 'Strawberry', 'Lemon', 'Lime', 'Orange', 'Strawberry', 'Lemon', 'Lime', 'Orange', 'Strawberry', 'Lemon', 'Lime', 'Orange', 'Strawberry'];
 
+  @ViewChild('fruitInput')
+  fruitInput!: ElementRef<HTMLInputElement>;
+
+  @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any> | undefined;
+  toppings = new FormControl();
+  toppingList: string[] = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
 
   webSocketAPI: WebSocketAPI = new WebSocketAPI();
   greeting: any;
   name: string | undefined;
-  events$!: Observable<CalendarEvent<{ film: Film; }>[]>;
-  events: CalendarEvent<{ film: Film; }>[] = [];
+  events$!: Observable<CalendarEvent<{ film: Meeting; }>[]>;
+  events: CalendarEvent<{ film: Meeting; }>[] = [];
 
 
   ngOnInit() {
     this.fetchEvents();
-   /*  this.connect(); */
+    /*  this.connect(); */
   }
 
   connect() {
@@ -187,7 +212,12 @@ export class DemoComponent {
 
   activeDayIsOpen: boolean = true;
 
-  constructor(private modal: NgbModal, private http: HttpClient, private eventService: EventServiceService) { }
+  constructor(private modal: NgbModal, private http: HttpClient, private eventService: EventServiceService) { 
+
+    this.filteredFruits = this.fruitCtrl.valueChanges.pipe(
+      startWith(null),
+      map((fruit: string | null) => fruit ? this._filter(fruit) : this.allFruits.slice()));
+  }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
     if (isSameMonth(date, this.viewDate)) {
@@ -223,19 +253,21 @@ export class DemoComponent {
         map((res: any) => {
 
           console.log(res)
-          return res.map((film: Film) => {
+          return res.map((film: Meeting) => {
             return {
-              id:film.id,
+              id: film.id,
               title: film.text,
               start: new Date(
                 film.start
               ),
+              end:film.end,
               color: colors.yellow,
               allDay: true,
               draggable: true,
               meta: {
                 film,
               },
+              actions: this.actions
             };
           });
         })
@@ -257,12 +289,13 @@ export class DemoComponent {
 
 
       if (iEvent === event) {
-        const film: Film = {
+        const film: Meeting = {
           id: event.meta.film.id,
           text: event.meta.film.text,
-          day:event.meta.film.day ,
+          day: event.meta.film.day,
           reminder: event.meta.film.reminder,
-          start: newStart
+          start: newStart,
+          end:newEnd
         }
 
 
@@ -276,7 +309,7 @@ export class DemoComponent {
 
         };
 
-        
+
       }
 
 
@@ -294,28 +327,33 @@ export class DemoComponent {
 
   addEvent(): void {
 
+
+/*     this.modalData = { action:"test" };
+ */    /* this.modal.open("Add" ); */
+
     const film = {
-      
+
       text: 'New event',
-      day:"test",
+      day: "test",
       reminder: true,
       start: startOfDay(new Date()),
+      end: startOfDay(new Date()),
     }
-    
-    
-
-    
 
 
 
-    this.eventService.addEvent(film).subscribe((film)=>{
+
+
+
+
+    this.eventService.addEvent(film).subscribe((film) => {
       console.log("meeh")
 
-      
-      
-      
+
+
+
       this.events.push({
-        id:film.id,
+        id: film.id,
         title: 'New event',
         start: startOfDay(new Date()),
         end: endOfDay(new Date()),
@@ -328,32 +366,52 @@ export class DemoComponent {
         meta: {
           film,
         },
-      
-      })
-      
+        actions:this.actions,
 
-    } 
-    
-      
-    )  }
+      })
+
+
+    }
+
+
+    )
+  }
 
   deleteEvent(eventToDelete: CalendarEvent) {
-    
-    this.eventService.deleteEvent(eventToDelete.meta.film).subscribe(()=>this.events = this.events.filter((event) => event !== eventToDelete));
+
+    this.eventService.deleteEvent(eventToDelete.meta.film).subscribe(() => this.events = this.events.filter((event) => event !== eventToDelete));
   }
 
   updateEvent(eventToUpdate: CalendarEvent) {
     /* this.events = this.events.filter((event) => event !== eventToDelete); */
 
-    const film: Film = {
+    const film: Meeting = {
       id: eventToUpdate.meta.film.id,
       text: eventToUpdate.title,
-      day:eventToUpdate.meta.film.day ,
+      day: eventToUpdate.meta.film.day,
       reminder: eventToUpdate.meta.film.reminder,
-      start: eventToUpdate.start
+      start: eventToUpdate.start,
+      end: eventToUpdate.end,
     }
-    
-    this.eventService.updateEvent(film).subscribe();
+
+    if(film.end){
+        if(film.end<film.start)
+        {
+            console.log("doesnt make sense");
+            return;
+
+        }
+        else{
+          this.eventService.updateEvent(film).subscribe();
+
+        }
+
+      }
+      else{
+        this.eventService.updateEvent(film).subscribe();
+
+      }
+
   }
 
   setView(view: CalendarView) {
@@ -364,5 +422,40 @@ export class DemoComponent {
     this.activeDayIsOpen = false;
   }
 
+  
+  add(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+
+    // Add our fruit
+    if (value) {
+      this.fruits.push(value);
+    }
+
+    // Clear the input value
+    event.chipInput!.clear();
+
+    this.fruitCtrl.setValue(null);
+  }
+
+  remove(fruit: string): void {
+    const index = this.fruits.indexOf(fruit);
+
+    if (index >= 0) {
+      this.fruits.splice(index, 1);
+    }
+  }
+
+  selected(event: MatAutocompleteSelectedEvent): void {
+    this.fruits.push(event.option.viewValue);
+    this.fruitInput.nativeElement.value = '';
+    this.fruitCtrl.setValue(null);
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.allFruits.filter(fruit => fruit.toLowerCase().includes(filterValue));
+  }
+    
   //select people
 }

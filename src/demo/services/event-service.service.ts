@@ -10,14 +10,20 @@ const httpOptions = {
 }
 
 
-interface Film {
+interface Meeting {
   id?: number;
   text: string;
   day: string;
   reminder: boolean,
-  start: Date
+  start: Date,
+  end?:Date
 }
 
+
+interface User {
+  id?: number;
+  name:string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -25,28 +31,51 @@ interface Film {
 
 
 export class EventServiceService {
-  calendarEvent!: CalendarEvent<{ film: Film; }>;
+  calendarEvent!: CalendarEvent<{ film: Meeting; }>;
   private apiUrl = "http://localhost:5000/events"
+  private apiUrlusers = "http://localhost:5000/users"
 
   constructor(private http:HttpClient) { }
 
 
-  getEvents():Observable<Film[]> {
-    return this.http.get<Film[]>(this.apiUrl);
+  getEvents():Observable<Meeting[]> {
+    return this.http.get<Meeting[]>(this.apiUrl);
   }
 
-  updateEvent(event:Film) : Observable<Film>{
+  updateEvent(event:Meeting) : Observable<Meeting>{
     const url = `${this.apiUrl}/${event.id}`;
-    return this.http.put<Film>(url,event,httpOptions)
+    return this.http.put<Meeting>(url,event,httpOptions)
   }
 
-  deleteEvent(event:Film):Observable<Film> {
+  deleteEvent(event:Meeting):Observable<Meeting> {
     const url = `${this.apiUrl}/${event.id}`;
-        return this.http.delete<Film>(url);
+        return this.http.delete<Meeting>(url);
   }
 
-  addEvent(event:Film):Observable<Film>{
-    return this.http.post<Film>(this.apiUrl,event,httpOptions);
+  addEvent(event:Meeting):Observable<Meeting>{
+    return this.http.post<Meeting>(this.apiUrl,event,httpOptions);
+  }
+
+
+
+
+
+  getUsers():Observable<User[]> {
+    return this.http.get<User[]>(this.apiUrlusers);
+  }
+
+  updateUser(user:User) : Observable<User>{
+    const url = `${this.apiUrlusers}/${user.id}`;
+    return this.http.put<User>(url,user,httpOptions)
+  }
+
+  deleteUser(user:User):Observable<User> {
+    const url = `${this.apiUrlusers}/${user.id}`;
+        return this.http.delete<User>(url);
+  }
+
+  addUser(user:User):Observable<User>{
+    return this.http.post<User>(this.apiUrlusers,user,httpOptions);
   }
 
 }
