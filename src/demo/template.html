@@ -118,10 +118,11 @@
     <thead>
       <tr>
         <th>Title</th>
-        <th>Primary color</th>
-        <th>Secondary color</th>
+        <!-- <th>Primary color</th>
+        <th>Secondary color</th> -->
         <th>Starts at</th>
         <th>Ends at</th>
+        <th>Attendees</th>
         <th>Update</th>
         <th>Remove</th>
         
@@ -139,7 +140,7 @@
             (keyup)="refresh.next()"
           />
         </td>
-        <td>
+        <!-- <td>
           <input
             type="color"
             [(ngModel)]="event.color.primary"
@@ -152,7 +153,7 @@
             [(ngModel)]="event.color.secondary"
             (change)="refresh.next()"
           />
-        </td>
+        </td> -->
         <td>
           <input
             class="form-control"
@@ -184,44 +185,48 @@
           />
         </td>
         
-        <td>
-          <button class="btn btn-primary" (click)="updateEvent(event)">
-            Update
-          </button>
-        </td>
-        <td>
-          <button class="btn btn-danger" (click)="deleteEvent(event)">
-            Delete
-          </button>
-        </td>
+        
         <td>
           <mat-form-field class="example-chip-list" appearance="fill">
-            <mat-label>Favorite Fruits</mat-label>
-            <mat-chip-list #chipList aria-label="Fruit selection">
+            <mat-label>Users</mat-label>
+            <mat-chip-list #chipList aria-label="Fruit selection" *ngIf="event.meta">
               <mat-chip
-                *ngFor="let fruit of fruits"
+                *ngFor="let user of event.meta.film.users"
                 [selectable]="selectable"
                 [removable]="removable"
-                (removed)="remove(fruit)">
-                {{fruit}}
+                (removed)="remove(user,event)">
+
+                
+                {{user.name}}
                 <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
               </mat-chip>
               <input
-                placeholder="New fruit..."
+                placeholder="add users..."
                 #fruitInput
                 [formControl]="fruitCtrl"
                 [matAutocomplete]="auto"
                 [matChipInputFor]="chipList"
                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                (matChipInputTokenEnd)="add($event)">
+                (matChipInputTokenEnd)="add($event,event)">
             </mat-chip-list>
-            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event,event)">
               <mat-option *ngFor="let fruit of filteredFruits | async" [value]="fruit">
                 {{fruit}}
               </mat-option>
             </mat-autocomplete>
-          </mat-form-field>
-      </td>
+            </mat-form-field>
+            </td>
+
+            <td>
+              <button class="btn btn-primary" (click)="updateEvent(event)">
+                Update
+              </button>
+            </td>
+            <td>
+              <button class="btn btn-danger" (click)="deleteEvent(event)">
+                Delete
+              </button>
+            </td>
         <!-- <td>
           <button class="btn btn-secondary" (click)="updateEvent(event)">
             Update

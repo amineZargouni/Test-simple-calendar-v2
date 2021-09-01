@@ -11,6 +11,7 @@ import {MatSelectModule} from '@angular/material/select';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import {MatIconModule} from '@angular/material/icon';
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatSelectModule,
     MatChipsModule,
     MatAutocompleteModule,
+    MatIconModule
   ],
   declarations: [DemoComponent],
   exports: [DemoComponent,],

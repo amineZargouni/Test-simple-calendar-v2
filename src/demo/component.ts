@@ -56,6 +56,14 @@ import { startWith} from 'rxjs/operators';
 interface Fruit {
   name: string;
 }
+
+
+interface User {
+  id?: number;
+  name:string;
+}
+
+
 const colors: any = {
   red: {
     primary: '#ad2121',
@@ -77,7 +85,8 @@ interface Meeting {
   day: string;
   reminder: boolean,
   start: Date,
-  end?:Date
+  end?:Date,
+  users?:User[];
 }
 
 
@@ -95,14 +104,15 @@ export class DemoComponent {
   fruitCtrl = new FormControl();
   filteredFruits!: Observable<string[]>;
   fruits: string[] = ['Lemon'];
+  users!: User[];
+  userNames!: string[];
   allFruits: string[] = ['Apple', 'Lemon', 'Lime', 'Orange', 'Strawberry', 'Lemon', 'Lime', 'Orange', 'Strawberry', 'Lemon', 'Lime', 'Orange', 'Strawberry', 'Lemon', 'Lime', 'Orange', 'Strawberry', 'Lemon', 'Lime', 'Orange', 'Strawberry', 'Lemon', 'Lime', 'Orange', 'Strawberry'];
 
   @ViewChild('fruitInput')
   fruitInput!: ElementRef<HTMLInputElement>;
 
   @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any> | undefined;
-  toppings = new FormControl();
-  toppingList: string[] = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
+  
 
   webSocketAPI: WebSocketAPI = new WebSocketAPI();
   greeting: any;
@@ -112,7 +122,17 @@ export class DemoComponent {
 
 
   ngOnInit() {
+    this.eventService.getUsers().subscribe((users)=>{this.users = users;
+      console.log(users);
+      this.userNames = users.map( (user)=>{ 
+        return user.name; 
+       });
     this.fetchEvents();
+    
+
+    
+
+    })
     /*  this.connect(); */
   }
 
@@ -216,7 +236,7 @@ export class DemoComponent {
 
     this.filteredFruits = this.fruitCtrl.valueChanges.pipe(
       startWith(null),
-      map((fruit: string | null) => fruit ? this._filter(fruit) : this.allFruits.slice()));
+      map((fruit: string | null) => fruit ? this._filter(fruit) : this.userNames.slice()));
   }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
@@ -232,6 +252,8 @@ export class DemoComponent {
       this.viewDate = date;
     }
   }
+
+  
 
   fetchEvents(): void {
     const getStart: any = {
@@ -252,7 +274,7 @@ export class DemoComponent {
       .pipe(
         map((res: any) => {
 
-          console.log(res)
+          
           return res.map((film: Meeting) => {
             return {
               id: film.id,
@@ -273,9 +295,13 @@ export class DemoComponent {
         })
       );
 
-    this.events$.subscribe((ev) => (this.events = ev));
-    console.log(this.events);
+    this.events$.subscribe((ev) => {
+      this.events = ev;
+      console.log(this.events);})
+    
   }
+
+
 
   eventTimesChanged({
     event,
@@ -295,7 +321,8 @@ export class DemoComponent {
           day: event.meta.film.day,
           reminder: event.meta.film.reminder,
           start: newStart,
-          end:newEnd
+          end:newEnd,
+          users:event.meta.film.users,
         }
 
 
@@ -338,6 +365,7 @@ export class DemoComponent {
       reminder: true,
       start: startOfDay(new Date()),
       end: startOfDay(new Date()),
+      users:[]
     }
 
 
@@ -392,6 +420,7 @@ export class DemoComponent {
       reminder: eventToUpdate.meta.film.reminder,
       start: eventToUpdate.start,
       end: eventToUpdate.end,
+      users:eventToUpdate.meta.film.users,
     }
 
     if(film.end){
@@ -423,13 +452,20 @@ export class DemoComponent {
   }
 
   
-  add(event: MatChipInputEvent): void {
+  add(event: MatChipInputEvent,ev: CalendarEvent<{ film: Meeting; }>): void {
     const value = (event.value || '').trim();
 
     // Add our fruit
     if (value) {
-      this.fruits.push(value);
-    }
+/*       this.fruits.push(value);
+
+ */   let obj = this.users.find(user => user.name === value);
+      if(obj)
+      ev.meta?.film.users?.push(obj);
+
+
+
+}
 
     // Clear the input value
     event.chipInput!.clear();
@@ -437,16 +473,24 @@ export class DemoComponent {
     this.fruitCtrl.setValue(null);
   }
 
-  remove(fruit: string): void {
-    const index = this.fruits.indexOf(fruit);
-
-    if (index >= 0) {
-      this.fruits.splice(index, 1);
+  remove(user: User,ev: CalendarEvent<{ film: Meeting; }>): void {
+    
+    const index = user.id;
+    
+    if ( index && index >= 0) {
+      ev.meta?.film.users?.splice(index, 1);
     }
   }
 
-  selected(event: MatAutocompleteSelectedEvent): void {
-    this.fruits.push(event.option.viewValue);
+  selected(event: MatAutocompleteSelectedEvent,ev:CalendarEvent<{film:Meeting}>): void {
+/*     this.fruits.push(event.option.viewValue)
+
+
+ */   
+    let obj = this.users.find(user => user.name === event.option.viewValue);
+      if(obj)
+      ev.meta?.film.users?.push(obj);
+
     this.fruitInput.nativeElement.value = '';
     this.fruitCtrl.setValue(null);
   }
@@ -454,7 +498,7 @@ export class DemoComponent {
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
 
-    return this.allFruits.filter(fruit => fruit.toLowerCase().includes(filterValue));
+    return this.userNames.filter(fruit => fruit.toLowerCase().includes(filterValue));
   }
     
   //select people

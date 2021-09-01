@@ -9,14 +9,18 @@ const httpOptions = {
   })
 }
 
-
+interface User {
+  id?: number;
+  name:string;
+}
 interface Meeting {
   id?: number;
   text: string;
   day: string;
   reminder: boolean,
   start: Date,
-  end?:Date
+  end?:Date,
+  users?:User[]
 }
 
 
