@@ -1,76 +1,17 @@
 {
   "events": [
     {
-      "id": 1,
-      "text": "Doctors Appointmentaa",
-      "day": "May 5th at 2:30pm",
-      "reminder": true,
-      "start": "2021-08-22T00:00:00.000Z",
-      "users": [
-        {
-          "id": 2,
-          "name": "rim"
-        }
-      ]
-    },
-    {
-      "id": 2,
-      "text": "Meeting at School",
-      "day": "May 6th at 2:30pm",
-      "reminder": true,
-      "start": "2021-08-23T00:00:00.000Z",
-      "end": null,
-      "users": [
-        {
-          "id": 2,
-          "name": "rim"
-        }
-      ]
-    },
-    {
-      "id": 4,
-      "text": "food stuffddd",
-      "day": "test",
-      "reminder": true,
-      "start": "2021-08-29T23:00:00.000Z",
-      "users": [
-        {
-          "id": 3,
-          "name": "mona"
-        },
-        {
-          "id": 2,
-          "name": "rim"
-        }
-      ]
-    },
-    {
       "text": "New event",
       "day": "test",
       "reminder": true,
-      "start": "2021-08-26T23:00:00.000Z",
-      "end": "2021-08-26T23:00:00.000Z",
-      "id": 5,
-      "users": [
-        {
-          "id": 1,
-          "name": "amine"
-        }
-      ]
-    },
-    {
-      "text": "New event",
-      "day": "test",
-      "reminder": true,
-      "start": "2021-08-26T23:00:00.000Z",
-      "end": "2021-08-26T23:00:00.000Z",
-      "id": 6,
-      "users": [
-        {
-          "id": 3,
-          "name": "mona"
-        }
-      ]
+      "start": "2021-08-31T23:00:00.000Z",
+      "end": "2021-08-31T23:00:00.000Z",
+      "users": [],
+      "color": {
+        "primary": "#ad2121",
+        "secondary": "#FAE3E3"
+      },
+      "id": 1
     }
   ],
   "users": [

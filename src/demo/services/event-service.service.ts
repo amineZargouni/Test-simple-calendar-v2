@@ -13,14 +13,20 @@ interface User {
   id?: number;
   name:string;
 }
+
+interface EventColor {
+  primary: string;
+  secondary: string;
+}
 interface Meeting {
   id?: number;
   text: string;
   day: string;
   reminder: boolean,
   start: Date,
-  end?:Date,
-  users?:User[]
+  end:Date,
+  users:User[],
+  color:EventColor
 }
 
 
@@ -35,7 +41,7 @@ interface User {
 
 
 export class EventServiceService {
-  calendarEvent!: CalendarEvent<{ film: Meeting; }>;
+  calendarEvent!: CalendarEvent<{ meeting: Meeting; }>;
   private apiUrl = "http://localhost:5000/events"
   private apiUrlusers = "http://localhost:5000/users"
 

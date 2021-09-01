@@ -63,6 +63,10 @@ interface User {
   name:string;
 }
 
+ interface EventColor {
+  primary: string;
+  secondary: string;
+}
 
 const colors: any = {
   red: {
@@ -79,14 +83,17 @@ const colors: any = {
   },
 };
 
+
+
 interface Meeting {
   id?: number;
   text: string;
   day: string;
   reminder: boolean,
   start: Date,
-  end?:Date,
-  users?:User[];
+  end:Date,
+  users:User[];
+  color:EventColor
 }
 
 
@@ -117,8 +124,8 @@ export class DemoComponent {
   webSocketAPI: WebSocketAPI = new WebSocketAPI();
   greeting: any;
   name: string | undefined;
-  events$!: Observable<CalendarEvent<{ film: Meeting; }>[]>;
-  events: CalendarEvent<{ film: Meeting; }>[] = [];
+  events$!: Observable<CalendarEvent<{ meeting: Meeting; }>[]>;
+  events: CalendarEvent<{ meeting: Meeting; }>[] = [];
 
 
   ngOnInit() {
@@ -253,6 +260,9 @@ export class DemoComponent {
     }
   }
 
+  goToBottom(){
+    window.scrollTo(0,document.body.scrollHeight);
+  }
   
 
   fetchEvents(): void {
@@ -275,19 +285,24 @@ export class DemoComponent {
         map((res: any) => {
 
           
-          return res.map((film: Meeting) => {
+          return res.map((meeting: Meeting) => {
             return {
-              id: film.id,
-              title: film.text,
+              id: meeting.id,
+              title: meeting.text,
               start: new Date(
-                film.start
+                meeting.start
               ),
-              end:film.end,
-              color: colors.yellow,
-              allDay: true,
+              
+              end:new Date(meeting.end),
+              color: meeting.color,
+              
               draggable: true,
+              resizable: {
+                beforeStart: true,
+                afterEnd: true,
+              },
               meta: {
-                film,
+                meeting,
               },
               actions: this.actions
             };
@@ -315,19 +330,20 @@ export class DemoComponent {
 
 
       if (iEvent === event) {
-        const film: Meeting = {
-          id: event.meta.film.id,
-          text: event.meta.film.text,
-          day: event.meta.film.day,
-          reminder: event.meta.film.reminder,
+        const meeting: Meeting = {
+          id: event.meta.meeting.id,
+          text: event.meta.meeting.text,
+          day: event.meta.meeting.day,
+          reminder: event.meta.meeting.reminder,
           start: newStart,
           end:newEnd,
-          users:event.meta.film.users,
+          users:event.meta.meeting.users,
+          color:event.color
         }
 
 
 
-        this.eventService.updateEvent(film).subscribe();
+        this.eventService.updateEvent(meeting).subscribe();
         return {
           ...event,
           start: newStart,
@@ -358,14 +374,15 @@ export class DemoComponent {
 /*     this.modalData = { action:"test" };
  */    /* this.modal.open("Add" ); */
 
-    const film = {
+    const meeting = {
 
       text: 'New event',
       day: "test",
       reminder: true,
       start: startOfDay(new Date()),
       end: startOfDay(new Date()),
-      users:[]
+      users:[],
+      color:colors.red
     }
 
 
@@ -374,14 +391,14 @@ export class DemoComponent {
 
 
 
-    this.eventService.addEvent(film).subscribe((film) => {
+    this.eventService.addEvent(meeting).subscribe((meeting) => {
       console.log("meeh")
 
 
 
 
       this.events.push({
-        id: film.id,
+        id: meeting.id,
         title: 'New event',
         start: startOfDay(new Date()),
         end: endOfDay(new Date()),
@@ -392,7 +409,7 @@ export class DemoComponent {
           afterEnd: true,
         },
         meta: {
-          film,
+          meeting,
         },
         actions:this.actions,
 
@@ -407,37 +424,38 @@ export class DemoComponent {
 
   deleteEvent(eventToDelete: CalendarEvent) {
 
-    this.eventService.deleteEvent(eventToDelete.meta.film).subscribe(() => this.events = this.events.filter((event) => event !== eventToDelete));
+    this.eventService.deleteEvent(eventToDelete.meta.meeting).subscribe(() => this.events = this.events.filter((event) => event !== eventToDelete));
   }
 
   updateEvent(eventToUpdate: CalendarEvent) {
     /* this.events = this.events.filter((event) => event !== eventToDelete); */
 
-    const film: Meeting = {
-      id: eventToUpdate.meta.film.id,
+    const meeting: Meeting = {
+      id: eventToUpdate.meta.meeting.id,
       text: eventToUpdate.title,
-      day: eventToUpdate.meta.film.day,
-      reminder: eventToUpdate.meta.film.reminder,
+      day: eventToUpdate.meta.meeting.day,
+      reminder: eventToUpdate.meta.meeting.reminder,
       start: eventToUpdate.start,
       end: eventToUpdate.end,
-      users:eventToUpdate.meta.film.users,
+      users:eventToUpdate.meta.meeting.users,
+      color:eventToUpdate.color
     }
 
-    if(film.end){
-        if(film.end<film.start)
+    if(meeting.end){
+        if(meeting.end<meeting.start)
         {
             console.log("doesnt make sense");
             return;
 
         }
         else{
-          this.eventService.updateEvent(film).subscribe();
+          this.eventService.updateEvent(meeting).subscribe();
 
         }
 
       }
       else{
-        this.eventService.updateEvent(film).subscribe();
+        this.eventService.updateEvent(meeting).subscribe();
 
       }
 
@@ -451,8 +469,13 @@ export class DemoComponent {
     this.activeDayIsOpen = false;
   }
 
+  changeDay(date: Date) {
+    this.viewDate = date;
+    this.view = CalendarView.Day;
+  }
+
   
-  add(event: MatChipInputEvent,ev: CalendarEvent<{ film: Meeting; }>): void {
+  add(event: MatChipInputEvent,ev: CalendarEvent<{ meeting: Meeting; }>): void {
     const value = (event.value || '').trim();
 
     // Add our fruit
@@ -460,8 +483,9 @@ export class DemoComponent {
 /*       this.fruits.push(value);
 
  */   let obj = this.users.find(user => user.name === value);
-      if(obj)
-      ev.meta?.film.users?.push(obj);
+ 
+ if(obj && !ev.meta?.meeting.users.find(user => user.name === value))
+ ev.meta?.meeting.users.push(obj);
 
 
 
@@ -473,23 +497,27 @@ export class DemoComponent {
     this.fruitCtrl.setValue(null);
   }
 
-  remove(user: User,ev: CalendarEvent<{ film: Meeting; }>): void {
+  remove(user: User,ev: CalendarEvent<{ meeting: Meeting; }>): void {
     
     const index = user.id;
-    
-    if ( index && index >= 0) {
-      ev.meta?.film.users?.splice(index, 1);
+    let newUsers = ev.meta?.meeting.users;
+    if ( newUsers) {
+/*       this.events = this.events.filter((event) => event !== eventToDelete));
+ */      /* newUsers = newUsers.filter((u) => u !== user) */
+
+        ev.meta.meeting.users =ev.meta.meeting.users.filter((u) => u !== user)
+      
     }
   }
 
-  selected(event: MatAutocompleteSelectedEvent,ev:CalendarEvent<{film:Meeting}>): void {
+  selected(event: MatAutocompleteSelectedEvent,ev:CalendarEvent<{meeting:Meeting}>): void {
 /*     this.fruits.push(event.option.viewValue)
 
 
  */   
     let obj = this.users.find(user => user.name === event.option.viewValue);
-      if(obj)
-      ev.meta?.film.users?.push(obj);
+      if(obj && !ev.meta?.meeting.users.find(user => user.name === event.option.viewValue))
+      ev.meta?.meeting.users.push(obj);
 
     this.fruitInput.nativeElement.value = '';
     this.fruitCtrl.setValue(null);
