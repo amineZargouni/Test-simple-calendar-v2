@@ -1,21 +1,21 @@
 import { Injectable } from '@angular/core';
-import {HttpClient,HttpHeaders} from '@angular/common/http'
-import {Observable} from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http'
+import { Observable } from 'rxjs';
 import { CalendarEvent } from 'calendar-utils';
 
 const httpOptions = {
   headers: new HttpHeaders({
-    'Content-Type' : 'application/json',
+    'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',
-'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT'
-    
+    'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT'
+
   })
 }
 
 interface User {
   id?: number;
-  name:string;
-  phoneNumber:string;
+  name: string;
+  phoneNumber: string;
 }
 
 interface EventColor {
@@ -28,20 +28,19 @@ interface Meeting {
   day: string;
   reminder: boolean,
   start: Date,
-  end:Date,
-  users:User[],
-  color:EventColor
+  end: Date,
+  users: User[],
+  color: EventColor
 }
 
 
 interface User {
   id?: number;
-  name:string;
+  name: string;
 }
-interface Sms
-{
+interface Sms {
   phoneNumber: string,
-  message : string;
+  message: string;
 
 }
 
@@ -56,54 +55,54 @@ export class EventServiceService {
   private apiUrlusers = "http://localhost:5000/users"
   private smsApiUrl = "http://localhost:8080/api/v1/sms"
 
-  constructor(private http:HttpClient) { }
+  constructor(private http: HttpClient) { }
 
 
-  getEvents():Observable<Meeting[]> {
+  getEvents(): Observable<Meeting[]> {
     return this.http.get<Meeting[]>(this.apiUrl);
   }
 
-  updateEvent(event:Meeting) : Observable<Meeting>{
+  updateEvent(event: Meeting): Observable<Meeting> {
     const url = `${this.apiUrl}/${event.id}`;
-    return this.http.put<Meeting>(url,event,httpOptions)
+    return this.http.put<Meeting>(url, event, httpOptions)
   }
 
-  deleteEvent(event:Meeting):Observable<Meeting> {
+  deleteEvent(event: Meeting): Observable<Meeting> {
     const url = `${this.apiUrl}/${event.id}`;
-        return this.http.delete<Meeting>(url);
+    return this.http.delete<Meeting>(url);
   }
 
-  addEvent(event:Meeting):Observable<Meeting>{
-    return this.http.post<Meeting>(this.apiUrl,event,httpOptions);
+  addEvent(event: Meeting): Observable<Meeting> {
+    return this.http.post<Meeting>(this.apiUrl, event, httpOptions);
   }
 
 
 
 
 
-  getUsers():Observable<User[]> {
+  getUsers(): Observable<User[]> {
     return this.http.get<User[]>(this.apiUrlusers);
   }
 
-  updateUser(user:User) : Observable<User>{
+  updateUser(user: User): Observable<User> {
     const url = `${this.apiUrlusers}/${user.id}`;
-    return this.http.put<User>(url,user,httpOptions)
+    return this.http.put<User>(url, user, httpOptions)
   }
 
-  deleteUser(user:User):Observable<User> {
+  deleteUser(user: User): Observable<User> {
     const url = `${this.apiUrlusers}/${user.id}`;
-        return this.http.delete<User>(url);
+    return this.http.delete<User>(url);
   }
 
-  addUser(user:User):Observable<User>{
-    return this.http.post<User>(this.apiUrlusers,user,httpOptions);
+  addUser(user: User): Observable<User> {
+    return this.http.post<User>(this.apiUrlusers, user, httpOptions);
   }
 
 
 
-  sendSms(sms:Sms):Observable<Sms>{
-    return this.http.post<Sms>(this.smsApiUrl,sms,httpOptions);
+  sendSms(sms: Sms): Observable<Sms> {
+    return this.http.post<Sms>(this.smsApiUrl, sms, httpOptions);
   }
-  
+
 
 }

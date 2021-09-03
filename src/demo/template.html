@@ -1,29 +1,15 @@
 <div class="row text-center" [ngStyle]="{'margin-top': '30px'}">
   <div class="col-md-4">
     <div class="btn-group">
-      <div
-        class="btn btn-primary"
-        mwlCalendarPreviousView
-        [view]="view"
-        [(viewDate)]="viewDate"
-        (viewDateChange)="closeOpenMonthViewDay()"
-      >
+      <div class="btn btn-primary" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
+        (viewDateChange)="closeOpenMonthViewDay()">
         Previous
       </div>
-      <div
-        class="btn btn-outline-secondary"
-        mwlCalendarToday
-        [(viewDate)]="viewDate"
-      >
+      <div class="btn btn-outline-secondary" mwlCalendarToday [(viewDate)]="viewDate">
         Today
       </div>
-      <div
-        class="btn btn-primary"
-        mwlCalendarNextView
-        [view]="view"
-        [(viewDate)]="viewDate"
-        (viewDateChange)="closeOpenMonthViewDay()"
-      >
+      <div class="btn btn-primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate"
+        (viewDateChange)="closeOpenMonthViewDay()">
         Next
       </div>
     </div>
@@ -33,25 +19,13 @@
   </div>
   <div class="col-md-4">
     <div class="btn-group">
-      <div
-        class="btn btn-primary"
-        (click)="setView(CalendarView.Month)"
-        [class.active]="view === CalendarView.Month"
-      >
+      <div class="btn btn-primary" (click)="setView(CalendarView.Month)" [class.active]="view === CalendarView.Month">
         Month
       </div>
-      <div
-        class="btn btn-primary"
-        (click)="setView(CalendarView.Week)"
-        [class.active]="view === CalendarView.Week"
-      >
+      <div class="btn btn-primary" (click)="setView(CalendarView.Week)" [class.active]="view === CalendarView.Week">
         Week
       </div>
-      <div
-        class="btn btn-primary"
-        (click)="setView(CalendarView.Day)"
-        [class.active]="view === CalendarView.Day"
-      >
+      <div class="btn btn-primary" (click)="setView(CalendarView.Day)" [class.active]="view === CalendarView.Day">
         Day
       </div>
     </div>
@@ -67,38 +41,20 @@
 </ng-template>
 
 <div *ngIf="events$ |async ; else loading;">
-<div [ngSwitch]="view">
-  
-  <mwl-calendar-month-view
-    *ngSwitchCase="CalendarView.Month"
-    [viewDate]="viewDate"
-    [events]="events"
-    [refresh]="refresh"
-    [activeDayIsOpen]="activeDayIsOpen"
-    (dayClicked)="dayClicked($event.day)"
-    (eventClicked)="handleEvent('Clicked', $event.event)"
-    (eventTimesChanged)="eventTimesChanged($event)"
-  >
-  </mwl-calendar-month-view>
-  <mwl-calendar-week-view
-    *ngSwitchCase="CalendarView.Week"
-    [viewDate]="viewDate"
-    [events]="events"
-    [refresh]="refresh"
-    (eventClicked)="handleEvent('Clicked', $event.event)"
-    (eventTimesChanged)="eventTimesChanged($event)"
-  >
-  </mwl-calendar-week-view>
-  <mwl-calendar-day-view
-    *ngSwitchCase="CalendarView.Day"
-    [viewDate]="viewDate"
-    [events]="events"
-    [refresh]="refresh"
-    (eventClicked)="handleEvent('Clicked', $event.event)"
-    (eventTimesChanged)="eventTimesChanged($event)"
-  >
-  </mwl-calendar-day-view>
-</div>
+  <div [ngSwitch]="view">
+
+    <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate" [events]="events"
+      [refresh]="refresh" [activeDayIsOpen]="activeDayIsOpen" (dayClicked)="dayClicked($event.day)"
+      (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)">
+    </mwl-calendar-month-view>
+    <mwl-calendar-week-view *ngSwitchCase="CalendarView.Week" [viewDate]="viewDate" [events]="events"
+      [refresh]="refresh" (eventClicked)="handleEvent('Clicked', $event.event)"
+      (eventTimesChanged)="eventTimesChanged($event)">
+    </mwl-calendar-week-view>
+    <mwl-calendar-day-view *ngSwitchCase="CalendarView.Day" [viewDate]="viewDate" [events]="events" [refresh]="refresh"
+      (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)">
+    </mwl-calendar-day-view>
+  </div>
 </div>
 
 <!-- Everything you see below is just for the demo, you don't need to include it in your app -->
@@ -109,13 +65,13 @@
   Edit events
 
 </h3>
-  <button class="btn btn-primary float-right " (click)="addEvent();" [ngStyle]="{'margin-bottom': '30px'}">
-    Add new
-  </button>
-  <div class="clearfix"></div>
+<button class="btn btn-primary float-right " (click)="addEvent();" [ngStyle]="{'margin-bottom': '30px'}">
+  Add new
+</button>
+<div class="clearfix"></div>
 
 
-<div *ngIf="events.length>0" class="table-responsive"  [ngStyle]="{'margin-bottom': '100px'}">
+<div *ngIf="events.length>0" class="table-responsive" [ngStyle]="{'margin-bottom': '100px'}">
   <table class="table table-bordered">
     <thead>
       <tr>
@@ -128,113 +84,86 @@
         <th>Update</th>
         <th>Remove</th>
         <th>sms</th>
-        
-        
+
+
       </tr>
     </thead>
 
     <tbody>
       <tr *ngFor="let event of events">
         <td>
-          <input
-            type="text"
-            class="form-control"
-            [(ngModel)]="event.title"
-            (keyup)="refresh.next()"
-          />
+          <input type="text" class="form-control" [(ngModel)]="event.title" (keyup)="refresh.next()" disabled />
         </td>
         <td>
-          <input
-            type="color"
-            [(ngModel)]="event.color.primary"
-            (change)="refresh.next()"
-          />
+          <input type="color" [(ngModel)]="event.color.primary" (change)="refresh.next()" disabled />
         </td>
         <td>
-          <input
-            type="color"
-            [(ngModel)]="event.color.secondary"
-            (change)="refresh.next()"
-          />
+          <input type="color" [(ngModel)]="event.color.secondary" (change)="refresh.next()" disabled />
         </td>
         <td>
-          <input
-            class="form-control"
-            type="text"
-            mwlFlatpickr
-            [(ngModel)]="event.start"
-            (ngModelChange)="refresh.next()"
-            [altInput]="true"
-            [convertModelValue]="true"
-            [enableTime]="true"
-            dateFormat="Y-m-dTH:i"
-            altFormat="F j, Y H:i"
-            placeholder="Not set"
-          />
+          <input class="form-control" type="text" mwlFlatpickr [(ngModel)]="event.start" disabled
+            (ngModelChange)="refresh.next()" [altInput]="true" [convertModelValue]="true" [enableTime]="true"
+            dateFormat="Y-m-dTH:i" altFormat="F j, Y H:i" placeholder="Not set" />
         </td>
         <td>
-          <input
-            class="form-control"
-            type="text"
-            mwlFlatpickr
-            [(ngModel)]="event.end"
-            (ngModelChange)="refresh.next()"
-            [altInput]="true"
-            [convertModelValue]="true"
-            [enableTime]="true"
-            dateFormat="Y-m-dTH:i"
-            altFormat="F j, Y H:i"
-            placeholder="Not set"
-          />
+          <input class="form-control" type="text" mwlFlatpickr [(ngModel)]="event.end" (ngModelChange)="refresh.next()"
+            disabled [altInput]="true" [convertModelValue]="true" [enableTime]="true" dateFormat="Y-m-dTH:i"
+            altFormat="F j, Y H:i" placeholder="Not set" />
         </td>
-        
-        
+
+
         <td>
-          <mat-form-field class="example-chip-list" appearance="fill">
+
+          <div *ngIf="event.meta.meeting.users.length>0; else elseBlock">
+            
+            <select name="users" id="user-select" class="form-control">
+              <option *ngFor="let user of event.meta.meeting.users" value="{{user.name}}">{{user.name}}</option>
+  
+            </select>   
+            
+
+          </div>
+          <ng-template #elseBlock>no Users</ng-template>
+
+          
+
+          <!-- <mat-form-field class="example-chip-list" appearance="fill">
             <mat-label>Users</mat-label>
-            <mat-chip-list #chipList aria-label="Fruit selection" *ngIf="event.meta">
-              <mat-chip
-                *ngFor="let user of event.meta.meeting.users"
-                [selectable]="selectable"
-                [removable]="removable"
+            <mat-chip-list #chipList aria-label="Fruit selection" *ngIf="event.meta" >
+              <mat-chip *ngFor="let user of event.meta.meeting.users" [selectable]="selectable" [removable]="removable"
                 (removed)="remove(user,event)">
 
-                
+
                 {{user.name}}
                 <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
               </mat-chip>
-              <input
-                placeholder="add users..."
-                #fruitInput
-                [formControl]="fruitCtrl"
-                [matAutocomplete]="auto"
-                [matChipInputFor]="chipList"
-                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              <input placeholder="add users..." #fruitInput [formControl]="fruitCtrl" [matAutocomplete]="auto"
+                [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                 (matChipInputTokenEnd)="add($event,event)">
             </mat-chip-list>
-            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event,event)" >
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event,event)">
               <mat-option *ngFor="let fruit of filteredFruits | async" [value]="fruit">
                 {{fruit}}
               </mat-option>
             </mat-autocomplete>
-            </mat-form-field>
-            </td>
+          </mat-form-field> -->
+        </td>
 
-            <td>
-              <button class="btn btn-primary" (click)="updateEvent(event)">
-                Update
-              </button>
-            </td>
-            <td>
-              <button class="btn btn-danger" (click)="deleteEvent(event)">
-                Delete
-              </button>
-            </td>
-            <td>
-              <button class="btn btn-danger" (click)="sendSms(event)">
-                send
-              </button>
-            </td>
+        <td>
+          <button class="btn btn-primary" (click)="handleEvent('Edited',event)">
+            Update
+          </button>
+        </td>
+        <td>
+          <button class="btn btn-danger" (click)="deleteEvent(event)">
+            Delete
+          </button>
+        </td>
+        <td>
+          <button class="btn btn-danger" (click)="sendSms(event)">
+            send
+          </button>
+        </td>
         <!-- <td>
           <button class="btn btn-secondary" (click)="updateEvent(event)">
             Update
@@ -245,7 +174,7 @@
   </table>
 </div>
 
-<ng-template #modalContent let-close="close">
+<!-- <ng-template #modalContent let-close="close">
   <div class="modal-header">
     <h5 class="modal-title">Event action occurred</h5>
     <button type="button" class="close" (click)="close()">
@@ -268,17 +197,120 @@
     </button>
   </div>
 </ng-template>
+ -->
+
+<ng-template #modalContent let-close="close">
+  <div class="modal-header">
+    <h5 class="modal-title">{{modalData?.event?.title}}</h5>
+    <button type="button" class="close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div>
+      Action:
+      <pre>{{ modalData?.action }}</pre>
+    </div>
+    <!-- <div>
+      Event:
+      <pre>{{ modalData?.event | json }}</pre>
+    </div> -->
+    <div>
+      <h6>Title</h6>
+      <input type="text" class="form-control" placeholder={{modalData?.event?.title}}
+        [(ngModel)]="modalData.event.title" [disabled]="disabled">
+    </div>
 
 
-<ng-template  let-close="close">
+
+
+    <div *ngIf="modalData">
+      <div>
+        <h6>Start Date</h6>
+        <input class="form-control" type="text" mwlFlatpickr [(ngModel)]="modalData.event.start" [disabled]="disabled"
+          (ngModelChange)="refresh.next()" [altInput]="true" [convertModelValue]="true" [enableTime]="true"
+          dateFormat="Y-m-dTH:i" altFormat="F j, Y H:i" placeholder="Not set" />
+      </div>
+      <div>
+        <h6>End date</h6>
+        <input class="form-control" type="text" mwlFlatpickr [(ngModel)]="modalData.event.end" [disabled]="disabled"
+          (ngModelChange)="refresh.next()" [altInput]="true" [convertModelValue]="true" [enableTime]="true"
+          dateFormat="Y-m-dTH:i" altFormat="F j, Y H:i" placeholder="Not set" />
+      </div>
+    </div>
+    <div *ngIf="modalData?.event?.meta.meeting.users.length>0 || !disabled">
+      <h6>users</h6>
+      <mat-form-field class="example-full-width" appearance="fill" *ngIf="modalData.event">
+        <mat-chip-list #chipList aria-label="Fruit selection">
+          <div *ngIf="modalData.event">
+            <mat-chip *ngFor="let user of modalData?.event?.meta.meeting.users" [selectable]="selectable"
+              [removable]="removable" (removed)="remove(user,modalData.event)">
+
+
+              {{user.name}}
+              <mat-icon matChipRemove *ngIf="removable && !disabled">cancel</mat-icon>
+
+            </mat-chip>
+            <div *ngIf="!disabled">
+              <input placeholder="add users..." #fruitInput [formControl]="fruitCtrl" [matAutocomplete]="auto"
+                [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                (matChipInputTokenEnd)="add($event,modalData.event)">
+              <mat-autocomplete class="md-autocomplete-suggestions-container" #auto="matAutocomplete"
+                (optionSelected)="selected($event,modalData.event)">
+                <mat-option class="md-autocomplete-suggestions-container" *ngFor="let fruit of filteredFruits | async"
+                  [value]="fruit">
+                  {{fruit}}
+                </mat-option>
+              </mat-autocomplete>
+
+            </div>
+
+
+          </div>
+
+        </mat-chip-list>
+
+      </mat-form-field>
+    </div>
+
+
+    <div *ngIf="modalData.event.color">
+      <div>
+        <h6>Primary Color</h6>
+        <input type="color" [(ngModel)]="modalData.event.color.primary" (change)="refresh.next()"
+          [disabled]="disabled" />
+      </div>
+      <div>
+        <h6>Primary Color</h6>
+        <input type="color" [(ngModel)]="modalData.event.color.secondary" (change)="refresh.next()"
+          [disabled]="disabled" />
+      </div>
+
+    </div>
+
+  </div>
+  <div class="modal-footer">
+
+    <button *ngIf="!disabled" type="button" class="btn btn-outline-primary"
+      (click)="updateEvent(modalData.event);close()">
+      Save updates
+    </button>
+    <button type="button" class="btn btn-outline-secondary" (click)="close()">
+      Close
+    </button>
+  </div>
+</ng-template>
+
+
+<!-- <ng-template  let-close="close">
   <div class="modal-header">
     <h5 class="modal-title">Modal to add</h5>
     <button type="button" class="close" (click)="close()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <div class="modal-body">
-   <!--  <div>
+  <div class="modal-body"> -->
+<!--  <div>
       Action:
       <pre>{{ modalData?.action }}</pre>
     </div>
@@ -286,12 +318,10 @@
       Event:
       <pre>{{ modalData?.event | json }}</pre>
     </div> -->
-  </div>
+<!--  </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline-secondary" (click)="close()">
       OK
     </button>
   </div>
-</ng-template>
-
-
+</ng-template> -->

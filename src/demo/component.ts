@@ -123,6 +123,9 @@ export class DemoComponent {
   userNames!: string[];
   allFruits: string[] = ['Apple', 'Lemon', 'Lime', 'Orange', 'Strawberry', 'Lemon', 'Lime', 'Orange', 'Strawberry', 'Lemon', 'Lime', 'Orange', 'Strawberry', 'Lemon', 'Lime', 'Orange', 'Strawberry', 'Lemon', 'Lime', 'Orange', 'Strawberry', 'Lemon', 'Lime', 'Orange', 'Strawberry'];
 
+
+  modalEvent!: CalendarEvent;
+
   @ViewChild('fruitInput')
   fruitInput!: ElementRef<HTMLInputElement>;
 
@@ -135,6 +138,8 @@ export class DemoComponent {
   events$!: Observable<CalendarEvent<{ meeting: Meeting; }>[]>;
   events: CalendarEvent<{ meeting: Meeting; }>[] = [];
 
+
+  disabled:boolean = true;
 
   ngOnInit() {
     this.eventService.getUsers().subscribe((users)=>{this.users = users;
@@ -176,10 +181,10 @@ export class DemoComponent {
   viewDate: Date = new Date();
 
 
-  modalData: {
+  modalData!: {
     action: string;
     event: CalendarEvent;
-  } | undefined;
+  };
 
   actions: CalendarEventAction[] = [
     {
@@ -193,8 +198,7 @@ export class DemoComponent {
       label: '<i class="fas fa-fw fa-trash-alt"></i>',
       a11yLabel: 'Delete',
       onClick: ({ event }: { event: CalendarEvent }): void => {
-        this.events = this.events?.filter((iEvent) => iEvent !== event);
-        this.handleEvent('Deleted', event);
+        this.deleteEvent(event);
       },
     },
   ];
@@ -380,7 +384,24 @@ export class DemoComponent {
   }
 
   handleEvent(action: string, event: CalendarEvent): void {
+
+
+    
+
+    if(action === "Clicked")
+    {
+      this.disabled = true;
+    }
+
+
+    if(action === "Edited")
+    {
+      this.disabled = false;
+    }
+
+
     this.modalData = { event, action };
+
     this.modal.open(this.modalContent, { size: 'lg' });
   }
 
@@ -411,9 +432,8 @@ export class DemoComponent {
       console.log("meeh")
 
 
-
-
-      this.events.push({
+      
+      const newEvent:CalendarEvent = {
         id: meeting.id,
         title: 'New event',
         start: startOfDay(new Date()),
@@ -429,9 +449,14 @@ export class DemoComponent {
         },
         actions:this.actions,
 
-      })
+      }
 
 
+    
+
+      this.events.push(newEvent);
+      this.handleEvent('Edited',newEvent);
+      
     }
 
 
@@ -565,14 +590,23 @@ export class DemoComponent {
         color:event.color
       } */
       
+      const restOfAttendees = ev.meta.meeting.users.filter((us) => us!==user);
+
+      const restOfAttendeesNames  = restOfAttendees.map( (user:User)=>{ 
+        return user.name; 
+       });
       
-      const sms:Sms= {
+       if(user.phoneNumber){
+      const sms:Sms= { 
         phoneNumber:user.phoneNumber,
-        message:"You have a new meeting named "+ ev.title+ " at "+ ev.start
+        message:"You have a new meeting named "+ ev.title+ " at "+ ev.start+ " with "+  restOfAttendeesNames
       }
+
+      console.log(sms);
       this.eventService.sendSms(sms).subscribe(()=>console.log("sms sent"));
-      
-    });
+/*       this.events = this.events.filter((event) => event !== eventToDelete));
+ */    }});
+ 
     
   }
     
