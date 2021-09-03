@@ -61,11 +61,19 @@ interface Fruit {
 interface User {
   id?: number;
   name:string;
+  phoneNumber:string;
 }
 
  interface EventColor {
   primary: string;
   secondary: string;
+}
+
+interface Sms
+{
+  phoneNumber: string,
+  message : string;
+
 }
 
 const colors: any = {
@@ -140,7 +148,7 @@ export class DemoComponent {
     
 
     })
-    /*  this.connect(); */
+     this.connect();
   }
 
   connect() {
@@ -360,7 +368,15 @@ export class DemoComponent {
     });
     this.handleEvent('Dropped or resized', event);
 
-    this.sendMessage("action happened to " + event.title);
+    const attendees  = event.meta.meeting.users.map( (user:User)=>{ 
+      return user.name; 
+     });
+
+     const phoneNumbers  = event.meta.meeting.users.map( (user:User)=>{ 
+      return user.phoneNumber; 
+     });
+
+    this.sendMessage("A new Event  " + event.title +"with these attendees : "+attendees + " with numbers "+ phoneNumbers);
   }
 
   handleEvent(action: string, event: CalendarEvent): void {
@@ -527,6 +543,37 @@ export class DemoComponent {
     const filterValue = value.toLowerCase();
 
     return this.userNames.filter(fruit => fruit.toLowerCase().includes(filterValue));
+  }
+
+
+  sendSms(ev: CalendarEvent<{ meeting: Meeting; }>)
+  {
+    let users = ev.meta.meeting.users.map((user:User)=> {return user});
+
+    users.forEach(user => {
+      console.log(user);
+
+
+      /* const meeting: Meeting = {
+        id: event.meta.meeting.id,
+        text: event.meta.meeting.text,
+        day: event.meta.meeting.day,
+        reminder: event.meta.meeting.reminder,
+        start: newStart,
+        end:newEnd,
+        users:event.meta.meeting.users,
+        color:event.color
+      } */
+      
+      
+      const sms:Sms= {
+        phoneNumber:user.phoneNumber,
+        message:"You have a new meeting named "+ ev.title+ " at "+ ev.start
+      }
+      this.eventService.sendSms(sms).subscribe(()=>console.log("sms sent"));
+      
+    });
+    
   }
     
   //select people

@@ -5,13 +5,17 @@ import { CalendarEvent } from 'calendar-utils';
 
 const httpOptions = {
   headers: new HttpHeaders({
-    'Content-Type' : 'application/json'
+    'Content-Type' : 'application/json',
+    'Access-Control-Allow-Origin': '*',
+'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT'
+    
   })
 }
 
 interface User {
   id?: number;
   name:string;
+  phoneNumber:string;
 }
 
 interface EventColor {
@@ -34,6 +38,12 @@ interface User {
   id?: number;
   name:string;
 }
+interface Sms
+{
+  phoneNumber: string,
+  message : string;
+
+}
 
 @Injectable({
   providedIn: 'root'
@@ -44,6 +54,7 @@ export class EventServiceService {
   calendarEvent!: CalendarEvent<{ meeting: Meeting; }>;
   private apiUrl = "http://localhost:5000/events"
   private apiUrlusers = "http://localhost:5000/users"
+  private smsApiUrl = "http://localhost:8080/api/v1/sms"
 
   constructor(private http:HttpClient) { }
 
@@ -87,5 +98,12 @@ export class EventServiceService {
   addUser(user:User):Observable<User>{
     return this.http.post<User>(this.apiUrlusers,user,httpOptions);
   }
+
+
+
+  sendSms(sms:Sms):Observable<Sms>{
+    return this.http.post<Sms>(this.smsApiUrl,sms,httpOptions);
+  }
+  
 
 }

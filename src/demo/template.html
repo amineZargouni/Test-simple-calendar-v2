@@ -1,4 +1,4 @@
-<div class="row text-center">
+<div class="row text-center" [ngStyle]="{'margin-top': '30px'}">
   <div class="col-md-4">
     <div class="btn-group">
       <div
@@ -103,17 +103,19 @@
 
 <!-- Everything you see below is just for the demo, you don't need to include it in your app -->
 
-<br /><br /><br />
+<br /><br />
 
-<h3>
+<h3 *ngIf="events.length>0">
   Edit events
-  <button class="btn btn-primary float-right" (click)="addEvent();">
+
+</h3>
+  <button class="btn btn-primary float-right " (click)="addEvent();" [ngStyle]="{'margin-bottom': '30px'}">
     Add new
   </button>
   <div class="clearfix"></div>
-</h3>
 
-<div class="table-responsive">
+
+<div *ngIf="events.length>0" class="table-responsive"  [ngStyle]="{'margin-bottom': '100px'}">
   <table class="table table-bordered">
     <thead>
       <tr>
@@ -125,6 +127,7 @@
         <th>Attendees</th>
         <th>Update</th>
         <th>Remove</th>
+        <th>sms</th>
         
         
       </tr>
@@ -209,7 +212,7 @@
                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                 (matChipInputTokenEnd)="add($event,event)">
             </mat-chip-list>
-            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event,event)">
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event,event)" >
               <mat-option *ngFor="let fruit of filteredFruits | async" [value]="fruit">
                 {{fruit}}
               </mat-option>
@@ -225,6 +228,11 @@
             <td>
               <button class="btn btn-danger" (click)="deleteEvent(event)">
                 Delete
+              </button>
+            </td>
+            <td>
+              <button class="btn btn-danger" (click)="sendSms(event)">
+                send
               </button>
             </td>
         <!-- <td>
