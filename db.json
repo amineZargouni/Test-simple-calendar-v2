@@ -3,11 +3,19 @@
     {
       "id": 1,
 <<<<<<< HEAD
+<<<<<<< HEAD
       "text": "sAber",
       "day": "test",
       "reminder": true,
       "start": "2021-09-15T23:00:00.000Z",
       "end": "2021-09-16T23:00:00.000Z",
+=======
+      "text": "New event",
+      "day": "test",
+      "reminder": true,
+      "start": "2021-09-08T23:00:00.000Z",
+      "end": "2021-09-08T23:00:00.000Z",
+>>>>>>> parent of a888ba1 (updates and fixes to the modal)
 =======
       "text": "New event",
       "day": "test",
@@ -50,6 +58,9 @@
       "reminder": true,
       "start": "2021-09-02T07:00:00.000Z",
       "end": "2021-09-02T22:59:59.999Z",
+<<<<<<< HEAD
+>>>>>>> parent of a888ba1 (updates and fixes to the modal)
+=======
 >>>>>>> parent of a888ba1 (updates and fixes to the modal)
       "users": [
         {

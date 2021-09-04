@@ -123,9 +123,6 @@ export class DemoComponent {
   userNames!: string[];
   allFruits: string[] = ['Apple', 'Lemon', 'Lime', 'Orange', 'Strawberry', 'Lemon', 'Lime', 'Orange', 'Strawberry', 'Lemon', 'Lime', 'Orange', 'Strawberry', 'Lemon', 'Lime', 'Orange', 'Strawberry', 'Lemon', 'Lime', 'Orange', 'Strawberry', 'Lemon', 'Lime', 'Orange', 'Strawberry'];
 
-
-  modalEvent!: CalendarEvent;
-
   @ViewChild('fruitInput')
   fruitInput!: ElementRef<HTMLInputElement>;
 
@@ -389,6 +386,7 @@ export class DemoComponent {
 
   handleEvent(action: string, event: CalendarEvent): void {
 <<<<<<< HEAD
+<<<<<<< HEAD
 
     
 
@@ -409,6 +407,9 @@ export class DemoComponent {
     this.modalData = { event:this.modalEvent, action };
 /*     console.log("hedhi el modal"+this.modalEvent.id)
  */
+=======
+    this.modalData = { event, action };
+>>>>>>> parent of a888ba1 (updates and fixes to the modal)
 =======
     this.modalData = { event, action };
 >>>>>>> parent of a888ba1 (updates and fixes to the modal)
@@ -613,4 +614,13 @@ export class DemoComponent {
       }
       this.eventService.sendSms(sms).subscribe(()=>console.log("sms sent"));
       
+<<<<<<< HEAD
     });}}
+=======
+    });
+    
+  }
+    
+  //select people
+}
+>>>>>>> parent of a888ba1 (updates and fixes to the modal)
