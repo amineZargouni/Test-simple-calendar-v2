@@ -382,24 +382,7 @@ export class DemoComponent {
   }
 
   handleEvent(action: string, event: CalendarEvent): void {
-
-
-    
-
-    if(action === "Clicked")
-    {
-      this.disabled = true;
-    }
-
-
-    if(action === "Edited")
-    {
-      this.disabled = false;
-    }
-
-
     this.modalData = { event, action };
-
     this.modal.open(this.modalContent, { size: 'lg' });
   }
 
@@ -591,4 +574,9 @@ export class DemoComponent {
       }
       this.eventService.sendSms(sms).subscribe(()=>console.log("sms sent"));
       
-    });}}
+    });
+    
+  }
+    
+  //select people
+}
