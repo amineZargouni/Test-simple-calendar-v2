@@ -122,7 +122,11 @@ export class DemoComponent {
   users!: User[];
   userNames!: string[];
   allFruits: string[] = ['Apple', 'Lemon', 'Lime', 'Orange', 'Strawberry', 'Lemon', 'Lime', 'Orange', 'Strawberry', 'Lemon', 'Lime', 'Orange', 'Strawberry', 'Lemon', 'Lime', 'Orange', 'Strawberry', 'Lemon', 'Lime', 'Orange', 'Strawberry', 'Lemon', 'Lime', 'Orange', 'Strawberry'];
+<<<<<<< HEAD
   disabled:boolean = false; 
+=======
+
+>>>>>>> parent of a888ba1 (updates and fixes to the modal)
   @ViewChild('fruitInput')
   fruitInput!: ElementRef<HTMLInputElement>;
 
