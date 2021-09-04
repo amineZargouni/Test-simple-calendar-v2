@@ -2,20 +2,23 @@
   "events": [
     {
       "id": 1,
+<<<<<<< HEAD
       "text": "sAber",
       "day": "test",
       "reminder": true,
       "start": "2021-09-15T23:00:00.000Z",
       "end": "2021-09-16T23:00:00.000Z",
+=======
+      "text": "New event",
+      "day": "test",
+      "reminder": true,
+      "start": "2021-09-08T23:00:00.000Z",
+      "end": "2021-09-08T23:00:00.000Z",
+>>>>>>> parent of a888ba1 (updates and fixes to the modal)
       "users": [
         {
           "id": 2,
           "name": "rim"
-        },
-        {
-          "id": 1,
-          "name": "amine",
-          "phoneNumber": "+21623639895"
         }
       ],
       "color": {
@@ -24,21 +27,39 @@
       }
     },
     {
-      "id": 2,
       "text": "New event",
       "day": "test",
       "reminder": true,
+<<<<<<< HEAD
       "start": "2021-09-02T23:00:00.000Z",
       "end": "2021-09-02T23:00:00.000Z",
+=======
+      "start": "2021-09-01T23:00:00.000Z",
+      "end": "2021-09-01T23:00:00.000Z",
+      "users": [],
+      "color": {
+        "primary": "#ad2121",
+        "secondary": "#FAE3E3"
+      },
+      "id": 2
+    },
+    {
+      "id": 3,
+      "text": "Morning meeting",
+      "day": "test",
+      "reminder": true,
+      "start": "2021-09-02T07:00:00.000Z",
+      "end": "2021-09-02T22:59:59.999Z",
+>>>>>>> parent of a888ba1 (updates and fixes to the modal)
       "users": [
         {
-          "id": 2,
-          "name": "rim",
-          "phoneNumber": "+21622856982"
+          "id": 1,
+          "name": "amine",
+          "phoneNumber": "+21623639895"
         }
       ],
       "color": {
-        "primary": "#21ab51",
+        "primary": "#ad2121",
         "secondary": "#FAE3E3"
       }
     }
@@ -51,8 +72,7 @@
     },
     {
       "id": 2,
-      "name": "rim",
-      "phoneNumber": "+21622856982"
+      "name": "rim"
     },
     {
       "id": 3,

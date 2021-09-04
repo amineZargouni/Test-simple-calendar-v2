@@ -129,6 +129,9 @@ export class DemoComponent {
   @ViewChild('fruitInput')
   fruitInput!: ElementRef<HTMLInputElement>;
 
+  @ViewChild('modalC  @ViewChild('fruitInput')
+  fruitInput!: ElementRef<HTMLInputElement>;
+
   @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any> | undefined;
   
 
@@ -138,8 +141,6 @@ export class DemoComponent {
   events$!: Observable<CalendarEvent<{ meeting: Meeting; }>[]>;
   events: CalendarEvent<{ meeting: Meeting; }>[] = [];
 
-
-  disabled:boolean = true;
 
   ngOnInit() {
     this.eventService.getUsers().subscribe((users)=>{this.users = users;
@@ -181,10 +182,10 @@ export class DemoComponent {
   viewDate: Date = new Date();
 
 
-  modalData!: {
+  modalData: {
     action: string;
     event: CalendarEvent;
-  };
+  } | undefined;
 
   actions: CalendarEventAction[] = [
     {
@@ -198,7 +199,8 @@ export class DemoComponent {
       label: '<i class="fas fa-fw fa-trash-alt"></i>',
       a11yLabel: 'Delete',
       onClick: ({ event }: { event: CalendarEvent }): void => {
-        this.deleteEvent(event);
+        this.events = this.events?.filter((iEvent) => iEvent !== event);
+        this.handleEvent('Deleted', event);
       },
     },
   ];
@@ -386,6 +388,7 @@ export class DemoComponent {
   }
 
   handleEvent(action: string, event: CalendarEvent): void {
+<<<<<<< HEAD
 
     
 
@@ -406,6 +409,9 @@ export class DemoComponent {
     this.modalData = { event:this.modalEvent, action };
 /*     console.log("hedhi el modal"+this.modalEvent.id)
  */
+=======
+    this.modalData = { event, action };
+>>>>>>> parent of a888ba1 (updates and fixes to the modal)
     this.modal.open(this.modalContent, { size: 'lg' });
   }
 
@@ -436,8 +442,9 @@ export class DemoComponent {
      
 
 
-      
-      const newEvent:CalendarEvent = {
+
+
+      this.events.push({
         id: meeting.id,
         title: 'New event',
         start: startOfDay(new Date()),
@@ -453,14 +460,9 @@ export class DemoComponent {
         },
         actions:this.actions,
 
-      }
+      })
 
 
-    
-
-      this.events.push(newEvent);
-      this.handleEvent('Edited',newEvent);
-      
     }
 
 
@@ -604,25 +606,11 @@ export class DemoComponent {
         color:event.color
       } */
       
-      const restOfAttendees = ev.meta.meeting.users.filter((us) => us!==user);
-
-      const restOfAttendeesNames  = restOfAttendees.map( (user:User)=>{ 
-        return user.name; 
-       });
       
-       if(user.phoneNumber){
-      const sms:Sms= { 
+      const sms:Sms= {
         phoneNumber:user.phoneNumber,
-        message:"You have a new meeting named "+ ev.title+ " at "+ ev.start+ " with "+  restOfAttendeesNames
+        message:"You have a new meeting named "+ ev.title+ " at "+ ev.start
       }
-
-      console.log(sms);
       this.eventService.sendSms(sms).subscribe(()=>console.log("sms sent"));
-/*       this.events = this.events.filter((event) => event !== eventToDelete));
- */    }});
- 
-    
-  }
-    
-  //select people
-}
+      
+    });}}
