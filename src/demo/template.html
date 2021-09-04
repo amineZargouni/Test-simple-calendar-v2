@@ -272,9 +272,13 @@
 
 <ng-template  let-close="close">
   <div class="modal-header">
+<<<<<<< HEAD
 
     <h5 class="modal-title">{{modalEvent.title}}</h5>
 
+=======
+    <h5 class="modal-title">{{modalData?.event?.title}}</h5>
+>>>>>>> parent of 205a81b (problems with this comit)
     <button type="button" class="close" (click)="close()">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -291,8 +295,8 @@
 
     <div>
       <h6>Title</h6>
-      <input type="text" class="form-control" placeholder={{modalEvent.title}}
-        [(ngModel)]="modalEvent.title" [disabled]="disabled">
+      <input type="text" class="form-control" placeholder={{modalData?.event?.title}}
+        [(ngModel)]="modalData.event.title" [disabled]="disabled">
     </div>
 
 
@@ -301,13 +305,13 @@
     <div *ngIf="modalData">
       <div>
         <h6>Start Date</h6>
-        <input class="form-control" type="text" mwlFlatpickr [(ngModel)]="modalEvent.start" [disabled]="disabled"
+        <input class="form-control" type="text" mwlFlatpickr [(ngModel)]="modalData.event.start" [disabled]="disabled"
           (ngModelChange)="refresh.next()" [altInput]="true" [convertModelValue]="true" [enableTime]="true"
           dateFormat="Y-m-dTH:i" altFormat="F j, Y H:i" placeholder="Not set" />
       </div>
       <div>
         <h6>End date</h6>
-        <input class="form-control" type="text" mwlFlatpickr [(ngModel)]="modalEvent.end" [disabled]="disabled"
+        <input class="form-control" type="text" mwlFlatpickr [(ngModel)]="modalData.event.end" [disabled]="disabled"
           (ngModelChange)="refresh.next()" [altInput]="true" [convertModelValue]="true" [enableTime]="true"
           dateFormat="Y-m-dTH:i" altFormat="F j, Y H:i" placeholder="Not set" />
       </div>
@@ -318,7 +322,7 @@
         <mat-chip-list #chipList aria-label="Fruit selection">
           <div *ngIf="modalData.event">
             <mat-chip *ngFor="let user of modalData?.event?.meta.meeting.users" [selectable]="selectable"
-              [removable]="removable" (removed)="remove(user,modalEvent)">
+              [removable]="removable" (removed)="remove(user,modalData.event)">
 
 
               {{user.name}}
@@ -328,9 +332,9 @@
             <div *ngIf="!disabled">
               <input placeholder="add users..." #fruitInput [formControl]="fruitCtrl" [matAutocomplete]="auto"
                 [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                (matChipInputTokenEnd)="add($event,modalEvent)">
+                (matChipInputTokenEnd)="add($event,modalData.event)">
               <mat-autocomplete class="md-autocomplete-suggestions-container" #auto="matAutocomplete"
-                (optionSelected)="selected($event,modalEvent)">
+                (optionSelected)="selected($event,modalData.event)">
                 <mat-option class="md-autocomplete-suggestions-container" *ngFor="let fruit of filteredFruits | async"
                   [value]="fruit">
                   {{fruit}}
@@ -351,12 +355,12 @@
     <div *ngIf="modalData.event.color">
       <div>
         <h6>Primary Color</h6>
-        <input type="color" [(ngModel)]="modalEvent.color.primary" (change)="refresh.next()"
+        <input type="color" [(ngModel)]="modalData.event.color.primary" (change)="refresh.next()"
           [disabled]="disabled" />
       </div>
       <div>
         <h6>Primary Color</h6>
-        <input type="color" [(ngModel)]="modalEvent.color.secondary" (change)="refresh.next()"
+        <input type="color" [(ngModel)]="modalData.event.color.secondary" (change)="refresh.next()"
           [disabled]="disabled" />
       </div>
 
@@ -366,7 +370,11 @@
   <div class="modal-footer">
 
     <button *ngIf="!disabled" type="button" class="btn btn-outline-primary"
+<<<<<<< HEAD
       (click)="updateEvent(modalEvent);close()">
+=======
+      (click)="updateEvent(modalData.event);close()">
+>>>>>>> parent of 205a81b (problems with this comit)
       Save updates
     </button>
 =======

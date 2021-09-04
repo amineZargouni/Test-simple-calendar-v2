@@ -140,7 +140,7 @@ export class DemoComponent {
 
   ngOnInit() {
     this.eventService.getUsers().subscribe((users)=>{this.users = users;
-      /* console.log(users); */
+      console.log(users);
       this.userNames = users.map( (user)=>{ 
         return user.name; 
        });
@@ -168,7 +168,7 @@ export class DemoComponent {
   handleMessage() {
     this.greeting = "pls";
 
-    /* console.log("hedha " + this.greeting); */
+    console.log("hedha " + this.greeting);
   }
 
   view: CalendarView = CalendarView.Month;
@@ -322,7 +322,7 @@ export class DemoComponent {
 
     this.events$.subscribe((ev) => {
       this.events = ev;
-      })
+      console.log(this.events);})
     
   }
 
@@ -353,9 +353,7 @@ export class DemoComponent {
 
 
 
-        this.eventService.updateEvent(meeting).subscribe(
-          
-        );
+        this.eventService.updateEvent(meeting).subscribe();
         return {
           ...event,
           start: newStart,
@@ -384,10 +382,17 @@ export class DemoComponent {
   }
 
   handleEvent(action: string, event: CalendarEvent): void {
+<<<<<<< HEAD
     
 
 /*     this.modalEvent = {...event};
  */
+=======
+
+
+    
+
+>>>>>>> parent of 205a81b (problems with this comit)
     if(action === "Clicked")
     {
       this.disabled = true;
@@ -400,12 +405,17 @@ export class DemoComponent {
     }
 
 
+<<<<<<< HEAD
     
 /*     console.log("hedhi el modal"+this.modalEvent.id)
  */
     this.modalData = { event, action };
 
 
+=======
+    this.modalData = { event, action };
+
+>>>>>>> parent of 205a81b (problems with this comit)
     this.modal.open(this.modalContent, { size: 'lg' });
   }
 
@@ -433,7 +443,7 @@ export class DemoComponent {
 
 
     this.eventService.addEvent(meeting).subscribe((meeting) => {
-     
+      console.log("meeh")
 
 
 
@@ -482,8 +492,6 @@ export class DemoComponent {
       color:eventToUpdate.color
     }
 
-
-    /* console.log(eventToUpdate); */
     if(meeting.end){
         if(meeting.end<meeting.start)
         {
@@ -492,15 +500,7 @@ export class DemoComponent {
 
         }
         else{
-          this.eventService.updateEvent(meeting).subscribe((res)=> {
-
-          let index =  this.events.findIndex((event)=> { return event.id === eventToUpdate.id});
-          this.events[index].title = eventToUpdate.title;
-          
-        
-        }
-          
-          );
+          this.eventService.updateEvent(meeting).subscribe();
 
         }
 
@@ -586,7 +586,7 @@ export class DemoComponent {
     let users = ev.meta.meeting.users.map((user:User)=> {return user});
 
     users.forEach(user => {
-      /* console.log(user); */
+      console.log(user);
 
 
       /* const meeting: Meeting = {
