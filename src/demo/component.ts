@@ -382,17 +382,10 @@ export class DemoComponent {
   }
 
   handleEvent(action: string, event: CalendarEvent): void {
-<<<<<<< HEAD
-    
-
-/*     this.modalEvent = {...event};
- */
-=======
 
 
     
 
->>>>>>> parent of 205a81b (problems with this comit)
     if(action === "Clicked")
     {
       this.disabled = true;
@@ -405,17 +398,8 @@ export class DemoComponent {
     }
 
 
-<<<<<<< HEAD
-    
-/*     console.log("hedhi el modal"+this.modalEvent.id)
- */
     this.modalData = { event, action };
 
-
-=======
-    this.modalData = { event, action };
-
->>>>>>> parent of 205a81b (problems with this comit)
     this.modal.open(this.modalContent, { size: 'lg' });
   }
 
