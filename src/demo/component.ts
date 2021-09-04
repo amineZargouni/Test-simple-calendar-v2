@@ -122,12 +122,11 @@ export class DemoComponent {
   users!: User[];
   userNames!: string[];
   allFruits: string[] = ['Apple', 'Lemon', 'Lime', 'Orange', 'Strawberry', 'Lemon', 'Lime', 'Orange', 'Strawberry', 'Lemon', 'Lime', 'Orange', 'Strawberry', 'Lemon', 'Lime', 'Orange', 'Strawberry', 'Lemon', 'Lime', 'Orange', 'Strawberry', 'Lemon', 'Lime', 'Orange', 'Strawberry'];
-
+  disabled:boolean = false; 
   @ViewChild('fruitInput')
   fruitInput!: ElementRef<HTMLInputElement>;
 
-  @ViewChild('modalC  @ViewChild('fruitInput')
-  fruitInput!: ElementRef<HTMLInputElement>;
+
 
   @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any> | undefined;
   
@@ -385,13 +384,10 @@ export class DemoComponent {
   }
 
   handleEvent(action: string, event: CalendarEvent): void {
-<<<<<<< HEAD
-<<<<<<< HEAD
-
     
 
-    this.modalEvent = {...event};
-
+/*     this.modalEvent = {...event};
+ */
     if(action === "Clicked")
     {
       this.disabled = true;
@@ -404,15 +400,12 @@ export class DemoComponent {
     }
 
 
-    this.modalData = { event:this.modalEvent, action };
+    
 /*     console.log("hedhi el modal"+this.modalEvent.id)
  */
-=======
     this.modalData = { event, action };
->>>>>>> parent of a888ba1 (updates and fixes to the modal)
-=======
-    this.modalData = { event, action };
->>>>>>> parent of a888ba1 (updates and fixes to the modal)
+
+
     this.modal.open(this.modalContent, { size: 'lg' });
   }
 
@@ -614,13 +607,4 @@ export class DemoComponent {
       }
       this.eventService.sendSms(sms).subscribe(()=>console.log("sms sent"));
       
-<<<<<<< HEAD
     });}}
-=======
-    });
-    
-  }
-    
-  //select people
-}
->>>>>>> parent of a888ba1 (updates and fixes to the modal)
