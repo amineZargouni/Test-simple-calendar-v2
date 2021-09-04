@@ -178,10 +178,11 @@ export class DemoComponent {
   viewDate: Date = new Date();
 
 
-  modalData: {
+  modalData!: {
     action: string;
     event: CalendarEvent;
-  } | undefined;
+  } 
+  
 
   actions: CalendarEventAction[] = [
     {
@@ -195,8 +196,8 @@ export class DemoComponent {
       label: '<i class="fas fa-fw fa-trash-alt"></i>',
       a11yLabel: 'Delete',
       onClick: ({ event }: { event: CalendarEvent }): void => {
-        this.events = this.events?.filter((iEvent) => iEvent !== event);
-        this.handleEvent('Deleted', event);
+        
+        this.deleteEvent(event);
       },
     },
   ];
@@ -382,6 +383,19 @@ export class DemoComponent {
   }
 
   handleEvent(action: string, event: CalendarEvent): void {
+
+    if(action === "Clicked")
+    {
+      this.disabled = true;
+    }
+
+
+    if(action === "Edited")
+    {
+      this.disabled = false;
+    }
+
+
     this.modalData = { event, action };
     this.modal.open(this.modalContent, { size: 'lg' });
   }
@@ -415,7 +429,7 @@ export class DemoComponent {
 
 
 
-      this.events.push({
+      const newEvent:CalendarEvent = {
         id: meeting.id,
         title: 'New event',
         start: startOfDay(new Date()),
@@ -431,7 +445,10 @@ export class DemoComponent {
         },
         actions:this.actions,
 
-      })
+      }
+
+      this.events.push(newEvent);
+      this.handleEvent('Edited',newEvent);
 
 
     }
@@ -566,15 +583,20 @@ export class DemoComponent {
         users:event.meta.meeting.users,
         color:event.color
       } */
+
+      const restOfAttendees = ev.meta.meeting.users.filter((us) => us!==user);
+
+      const restOfAttendeesNames  = restOfAttendees.map( (user:User)=>{ 
+        return user.name; 
+       });
       
-      
+       if(user.phoneNumber){
       const sms:Sms= {
         phoneNumber:user.phoneNumber,
-        message:"You have a new meeting named "+ ev.title+ " at "+ ev.start
-      }
+        message:"You have a new meeting named "+ ev.title+ " at "+ ev.start+ " with "+  restOfAttendeesNames      }
       this.eventService.sendSms(sms).subscribe(()=>console.log("sms sent"));
       
-    });
+    }});
     
   }
     
