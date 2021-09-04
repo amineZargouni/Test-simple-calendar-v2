@@ -245,7 +245,7 @@
   </table>
 </div>
 
-<ng-template #modalContent let-close="close">
+<!-- <ng-template #modalContent let-close="close">
   <div class="modal-header">
     <h5 class="modal-title">Event action occurred</h5>
     <button type="button" class="close" (click)="close()">
@@ -267,18 +267,12 @@
       OK
     </button>
   </div>
-</ng-template>
+</ng-template> -->
 
 
 <ng-template  let-close="close">
   <div class="modal-header">
-<<<<<<< HEAD
-
-    <h5 class="modal-title">{{modalEvent.title}}</h5>
-
-=======
     <h5 class="modal-title">{{modalData?.event?.title}}</h5>
->>>>>>> parent of 205a81b (problems with this comit)
     <button type="button" class="close" (click)="close()">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -370,30 +364,19 @@
   <div class="modal-footer">
 
     <button *ngIf="!disabled" type="button" class="btn btn-outline-primary"
-<<<<<<< HEAD
-      (click)="updateEvent(modalEvent);close()">
-=======
       (click)="updateEvent(modalData.event);close()">
->>>>>>> parent of 205a81b (problems with this comit)
-      Save updates
+      Save changes
     </button>
-=======
-  </div>
-  <div class="modal-footer">
->>>>>>> parent of a888ba1 (updates and fixes to the modal)
-=======
-  </div>
-  <div class="modal-footer">
->>>>>>> parent of a888ba1 (updates and fixes to the modal)
     <button type="button" class="btn btn-outline-secondary" (click)="close()">
-      OK
-    </button>
+
+
+  
   </div>
+
+    
 </ng-template>
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 <!-- <ng-template  let-close="close">
   <div class="modal-header">
     <h5 class="modal-title">Modal to add</h5>
@@ -418,7 +401,3 @@
   </div>
 </ng-template> -->
 
-=======
->>>>>>> parent of a888ba1 (updates and fixes to the modal)
-=======
->>>>>>> parent of a888ba1 (updates and fixes to the modal)
