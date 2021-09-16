@@ -3,7 +3,7 @@
 
 
 .cdk-overlay-container {
-    position: absolute !important;
+   
     z-index: 1062 !important;
 }
 
@@ -34,3 +34,7 @@
 }
 
 
+.mat-form-field {
+    
+    width: 80% !important;
+}

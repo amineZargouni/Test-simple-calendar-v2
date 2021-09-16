@@ -34,16 +34,9 @@
 <br />
 
 
-<ng-template #customCellTemplate
-    let-day="day" 
-    let-openDay="openDay"
-    let-locale="locale"
-    let-tooltipPlacement="tooltipPlacement" 
-    let-highlightDay="highlightDay" 
-    let-unhighlightDay="unhighlightDay"
-    let-eventClicked="eventClicked" 
-    let-tooltipTemplate="tooltipTemplate" 
-    let-tooltipAppendToBody="tooltipAppendToBody">
+<ng-template #customCellTemplate let-day="day" let-openDay="openDay" let-locale="locale"
+  let-tooltipPlacement="tooltipPlacement" let-highlightDay="highlightDay" let-unhighlightDay="unhighlightDay"
+  let-eventClicked="eventClicked" let-tooltipTemplate="tooltipTemplate" let-tooltipAppendToBody="tooltipAppendToBody">
   <div class="cal-cell-top" (dblclick)="addEvent(day.date);refresh.next()">
 
     <div class="cal-cell-top">
@@ -53,27 +46,20 @@
 
   </div>
   <div class="cal-events" *ngIf="day.events.length > 0">
-    <div class="cal-event" *ngFor="let event of day.events"
-      [style.backgroundColor]="'white'"
-      [ngClass]="event?.cssClass" 
-      (mouseenter)="highlightDay.emit({event: event})"
+    <div class="cal-event" *ngFor="let event of day.events" [style.backgroundColor]="'white'"
+      [ngClass]="event?.cssClass" (mouseenter)="highlightDay.emit({event: event})"
       (mouseleave)="unhighlightDay.emit({event: event})"
-      [mwlCalendarTooltip]="event.title | calendarEventTitle:'monthTooltip':event" 
-      [tooltipPlacement]="tooltipPlacement"
-      [tooltipEvent]="event" [tooltipTemplate]="tooltipTemplate" 
-      [tooltipAppendToBody]="tooltipAppendToBody"
-      style="color: black;" 
-      mwlDraggable 
-      [class.cal-draggable]="event.draggable" 
-      dragActiveClass="cal-drag-active"
-      [dropData]="{event: event}" 
-      [dragAxis]="{x: event.draggable, y: event.draggable}">
-        {{event.title}} 
-      <i class="fas fa-fw fa-pencil-alt" style="cursor: pointer;" (click) = "handleEvent('Edited', event);refresh.next()"></i>
-      <i class="fas fa-fw fa-trash-alt"style="cursor: pointer;" (click) = "deleteEvent(event);"></i>
+      [mwlCalendarTooltip]="event.title | calendarEventTitle:'monthTooltip':event" [tooltipPlacement]="tooltipPlacement"
+      [tooltipEvent]="event" [tooltipTemplate]="tooltipTemplate" [tooltipAppendToBody]="tooltipAppendToBody"
+      style="color: black;" mwlDraggable [class.cal-draggable]="event.draggable" dragActiveClass="cal-drag-active"
+      [dropData]="{event: event}" [dragAxis]="{x: event.draggable, y: event.draggable}">
+      {{event.title}}
+      <i class="fas fa-fw fa-pencil-alt" style="cursor: pointer;"
+        (click)="handleEvent('Edited', event);refresh.next()"></i>
+      <i class="fas fa-fw fa-trash-alt" style="cursor: pointer;" (click)="deleteEvent(event);"></i>
 
     </div>
-  
+
   </div>
 </ng-template>
 
@@ -89,7 +75,7 @@
   <div [ngSwitch]="view">
 
     <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate" [events]="events"
-      [refresh]="refresh" [activeDayIsOpen]="activeDayIsOpen" (dayClicked)="dayClicked($event.day);refresh.next()"
+      [refresh]="refresh" [activeDayIsOpen]="activeDayIsOpen" (dayClicked)="dayClicked($event.day)"
       (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)"
       [cellTemplate]="customCellTemplate">
     </mwl-calendar-month-view>
@@ -248,18 +234,45 @@
 
 
     <div>
-      <div>
+      <!-- <div>
         <h6>Start Date</h6>
         <input class="form-control" type="text" mwlFlatpickr [(ngModel)]="modalData.event.start" [disabled]="disabled"
           (ngModelChange)="refresh.next()" [altInput]="true" [convertModelValue]="true" [enableTime]="true"
-          dateFormat="Y-m-dTH:i" altFormat="F j, Y H:i" placeholder="Not set" />
+          dateFormat="dd.MM.yyyy, HH:mm" altFormat="F j, Y H:i" placeholder="Not set" />
+      </div> -->
+
+      <div>
+        <h6>Start Date</h6>
+        <mat-form-field>
+          
+          <input matInput [ngxMatDatetimePicker]="picker" [(ngModel)]="modalData.event.start"
+            placeholder="{{modalData.event.start}}"  [min]="minDate" [max]="maxDate"
+            [disabled]="disabled">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <ngx-mat-datetime-picker #picker [showSpinners]="true" [showSeconds]="false" [stepHour]=1 [stepMinute]=1
+            [stepSecond]=1 [touchUi]="true" [enableMeridian]="false">
+          </ngx-mat-datetime-picker>
+        </mat-form-field>
       </div>
       <div>
+        <h6>End Date</h6>
+        <mat-form-field>
+          
+          <input matInput [ngxMatDatetimePicker]="picker1" [(ngModel)]="modalData.event.end"
+            placeholder="{{modalData.event.end}}"  [min]="minDate" [max]="maxDate"
+            [disabled]="disabled">
+          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+          <ngx-mat-datetime-picker #picker1 [showSpinners]="true" [showSeconds]="false" [stepHour]=1 [stepMinute]=1
+            [stepSecond]=1 [touchUi]="true" [enableMeridian]="false">
+          </ngx-mat-datetime-picker>
+        </mat-form-field>
+      </div>
+      <!-- <div>
         <h6>End date</h6>
         <input class="form-control" type="text" mwlFlatpickr [(ngModel)]="modalData.event.end" [disabled]="disabled"
           (ngModelChange)="refresh.next()" [altInput]="true" [convertModelValue]="true" [enableTime]="true"
           dateFormat="Y-m-dTH:i" altFormat="F j, Y H:i" placeholder="Not set" />
-      </div>
+      </div> -->
     </div>
     <div *ngIf="modalData?.event?.meta.meeting.users.length>0 || !disabled">
       <h6>users</h6>

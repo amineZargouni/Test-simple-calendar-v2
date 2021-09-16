@@ -2,53 +2,39 @@
   "events": [
     {
       "id": 1,
-      "text": "New event",
+      "text": "testEvent",
       "day": "test",
       "reminder": true,
-      "start": "2021-09-21T23:00:00.000Z",
-      "end": "2021-09-21T23:00:00.000Z",
-      "users": [],
-      "color": {
-        "primary": "#ad2121",
-        "secondary": "#FAE3E3"
-      }
-    },
-    {
-      "id": 2,
-      "text": "New event",
-      "day": "test",
-      "reminder": true,
-      "start": "2021-09-14T04:00:00.000Z",
-      "end": "2021-09-14T04:30:00.000Z",
+      "start": "2021-09-09T07:00:00.000Z",
+      "end": "2021-09-09T09:00:00.000Z",
       "users": [
-        {
-          "id": 7,
-          "name": "rami",
-          "phoneNumber": "+21622968667"
-        },
         {
           "id": 1,
           "name": "amine",
           "phoneNumber": "+21623639895"
+        },
+        {
+          "id": 2,
+          "name": "rim"
         }
       ],
       "color": {
-        "primary": "#3c41dd",
+        "primary": "#2138ab",
         "secondary": "#FAE3E3"
       }
     },
     {
-      "id": 7,
       "text": "New event",
       "day": "test",
       "reminder": true,
-      "start": "2021-09-15T23:00:00.000Z",
-      "end": "2021-09-17T23:00:00.000Z",
+      "start": "2021-09-08T23:00:00.000Z",
+      "end": "2021-09-08T23:00:00.000Z",
       "users": [],
       "color": {
         "primary": "#ad2121",
         "secondary": "#FAE3E3"
-      }
+      },
+      "id": 2
     }
   ],
   "users": [

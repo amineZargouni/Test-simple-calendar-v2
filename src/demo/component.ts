@@ -264,7 +264,7 @@ export class DemoComponent {
         events.length === 0
       ) {
 
-       /*  this.addEvent(date); */
+      
         this.activeDayIsOpen = false;
 
 
@@ -391,17 +391,20 @@ export class DemoComponent {
     if(action === "Clicked")
     {
       this.disabled = true;
+      this.modalData = { event, action };
+    this.modal.open(this.modalContent, { size: 'lg' });
     }
 
 
     if(action === "Edited")
     {
       this.disabled = false;
+      this.modalData = { event, action };
+    this.modal.open(this.modalContent, { size: 'lg' });
     }
 
 
-    this.modalData = { event, action };
-    this.modal.open(this.modalContent, { size: 'lg' });
+    
   }
 
   addEvent(eventStart?:Date): void {
