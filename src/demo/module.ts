@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlatpickrModule } from 'angularx-flatpickr';
-import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { CalendarModule, CalendarNativeDateFormatter, DateAdapter, DateFormatterParams } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { DemoComponent } from './component';
@@ -19,7 +19,26 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DATE_LOCALE } from '@angular/material/core'
+import { CalendarDateFormatter } from 'angular-calendar';
 
+
+class CustomDateFormatter extends CalendarNativeDateFormatter {
+
+  public dayViewHour({date, locale}: DateFormatterParams): string {
+    return new Intl.DateTimeFormat('ca', {
+      hour: 'numeric',
+      minute: 'numeric'
+    }).format(date);
+  }
+
+ 
+  public weekViewHour({date, locale}: DateFormatterParams): string {
+    return new Intl.DateTimeFormat('ca', {
+      hour: 'numeric',
+      minute: 'numeric'
+    }).format(date);
+  }
+}
 
 
 
@@ -32,7 +51,12 @@ import { MAT_DATE_LOCALE } from '@angular/material/core'
     FlatpickrModule.forRoot(),
     CalendarModule.forRoot({
       provide: DateAdapter,
-      useFactory: adapterFactory,
+      useFactory: adapterFactory
+    }, {
+      dateFormatter: {
+        provide: CalendarDateFormatter,
+        useClass: CustomDateFormatter
+      }
     }),
 
     MatNativeDateModule,
@@ -58,7 +82,7 @@ import { MAT_DATE_LOCALE } from '@angular/material/core'
   declarations: [DemoComponent],
   exports: [DemoComponent,],
   providers: [
-    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' }
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB', },
   ]
 })
 export class DemoModule { }

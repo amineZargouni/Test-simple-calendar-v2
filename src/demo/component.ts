@@ -35,6 +35,7 @@ import { Observable } from 'rxjs';
 import { Subject } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {
+  CalendarDateFormatter,
   CalendarEvent,
   CalendarEventAction,
   CalendarEventTimesChangedEvent,
@@ -111,6 +112,7 @@ interface Meeting {
   /*  changeDetection: ChangeDetectionStrategy.OnPush, */
   styleUrls: ['styles.css'],
   templateUrl: 'template.html',
+  
 })
 export class DemoComponent {
   selectable = true;

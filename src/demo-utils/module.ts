@@ -6,7 +6,8 @@ import { CalendarHeaderComponent } from './calendar-header.component';
 import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, CalendarModule,],
+  imports: [CommonModule, FormsModule, CalendarModule,
+  ],
   declarations: [CalendarHeaderComponent],
   exports: [CalendarHeaderComponent],
 })
