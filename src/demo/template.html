@@ -33,6 +33,51 @@
 </div>
 <br />
 
+
+<ng-template #customCellTemplate
+    let-day="day" 
+    let-openDay="openDay"
+    let-locale="locale"
+    let-tooltipPlacement="tooltipPlacement" 
+    let-highlightDay="highlightDay" 
+    let-unhighlightDay="unhighlightDay"
+    let-eventClicked="eventClicked" 
+    let-tooltipTemplate="tooltipTemplate" 
+    let-tooltipAppendToBody="tooltipAppendToBody">
+  <div class="cal-cell-top" (dblclick)="addEvent(day.date);refresh.next()">
+
+    <div class="cal-cell-top">
+      <span class="cal-day-badge" *ngIf="day.badgeTotal > 0">{{ day.badgeTotal }}</span>
+      <span class="cal-day-number">{{ day.date | calendarDate:'monthViewDayNumber':locale }}</span>
+    </div>
+
+  </div>
+  <div class="cal-events" *ngIf="day.events.length > 0">
+    <div class="cal-event" *ngFor="let event of day.events"
+      [style.backgroundColor]="'white'"
+      [ngClass]="event?.cssClass" 
+      (mouseenter)="highlightDay.emit({event: event})"
+      (mouseleave)="unhighlightDay.emit({event: event})"
+      [mwlCalendarTooltip]="event.title | calendarEventTitle:'monthTooltip':event" 
+      [tooltipPlacement]="tooltipPlacement"
+      [tooltipEvent]="event" [tooltipTemplate]="tooltipTemplate" 
+      [tooltipAppendToBody]="tooltipAppendToBody"
+      style="color: black;" 
+      mwlDraggable 
+      [class.cal-draggable]="event.draggable" 
+      dragActiveClass="cal-drag-active"
+      [dropData]="{event: event}" 
+      [dragAxis]="{x: event.draggable, y: event.draggable}">
+        {{event.title}} 
+      <i class="fas fa-fw fa-pencil-alt" style="cursor: pointer;" (click) = "handleEvent('Edited', event);refresh.next()"></i>
+      <i class="fas fa-fw fa-trash-alt"style="cursor: pointer;" (click) = "deleteEvent(event);"></i>
+
+    </div>
+  
+  </div>
+</ng-template>
+
+
 <ng-template #loading>
   <div class="text-center">
     <i class="fas fa-spin fa-spinner fa-5x"></i> <br />
@@ -44,8 +89,9 @@
   <div [ngSwitch]="view">
 
     <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate" [events]="events"
-      [refresh]="refresh" [activeDayIsOpen]="activeDayIsOpen" (dayClicked)="dayClicked($event.day)"
-      (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)">
+      [refresh]="refresh" [activeDayIsOpen]="activeDayIsOpen" (dayClicked)="dayClicked($event.day);refresh.next()"
+      (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)"
+      [cellTemplate]="customCellTemplate">
     </mwl-calendar-month-view>
     <mwl-calendar-week-view *ngSwitchCase="CalendarView.Week" [viewDate]="viewDate" [events]="events"
       [refresh]="refresh" (eventClicked)="handleEvent('Clicked', $event.event)"
@@ -95,7 +141,7 @@
           <input type="text" class="form-control" [(ngModel)]="event.title" (keyup)="refresh.next()" disabled />
         </td>
         <td>
-          <input type="color" [(ngModel)]="event.color.primary" (change)="refresh.next()"  disabled/>
+          <input type="color" [(ngModel)]="event.color.primary" (change)="refresh.next()" disabled />
         </td>
         <td>
           <input type="color" [(ngModel)]="event.color.secondary" (change)="refresh.next()" disabled />
@@ -103,23 +149,23 @@
         <td>
           <input class="form-control" type="text" mwlFlatpickr [(ngModel)]="event.start"
             (ngModelChange)="refresh.next()" [altInput]="true" [convertModelValue]="true" [enableTime]="true"
-            dateFormat="Y-m-dTH:i" altFormat="F j, Y H:i" placeholder="Not set" disabled/>
+            dateFormat="Y-m-dTH:i" altFormat="F j, Y H:i" placeholder="Not set" disabled />
         </td>
         <td>
           <input class="form-control" type="text" mwlFlatpickr [(ngModel)]="event.end" (ngModelChange)="refresh.next()"
             [altInput]="true" [convertModelValue]="true" [enableTime]="true" dateFormat="Y-m-dTH:i"
-            altFormat="F j, Y H:i" placeholder="Not set"  disabled />
+            altFormat="F j, Y H:i" placeholder="Not set" disabled />
         </td>
 
 
         <td>
           <div *ngIf="event.meta.meeting.users.length>0; else elseBlock">
-            
+
             <select name="users" id="user-select" class="form-control">
               <option *ngFor="let user of event.meta.meeting.users" value="{{user.name}}">{{user.name}}</option>
-  
-            </select>   
-            
+
+            </select>
+
 
           </div>
           <ng-template #elseBlock>no Users</ng-template>
@@ -176,9 +222,9 @@
 
 
 <ng-template #modalContent let-close="close">
-    <div class="modal-header">
-      <h5 class="modal-title">{{modalData?.event?.title}}</h5>
-      <button type="button" class="close" (click)="close()">
+  <div class="modal-header">
+    <h5 class="modal-title">{{modalData?.event?.title}}</h5>
+    <button type="button" class="close" (click)="close()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>

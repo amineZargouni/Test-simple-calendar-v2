@@ -263,7 +263,11 @@ export class DemoComponent {
         (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
         events.length === 0
       ) {
+
+       /*  this.addEvent(date); */
         this.activeDayIsOpen = false;
+
+
       } else {
         this.activeDayIsOpen = true;
       }
@@ -400,19 +404,27 @@ export class DemoComponent {
     this.modal.open(this.modalContent, { size: 'lg' });
   }
 
-  addEvent(): void {
+  addEvent(eventStart?:Date): void {
 
 
 /*     this.modalData = { action:"test" };
  */    /* this.modal.open("Add" ); */
+
+ console.log(eventStart)
+ let start = new Date()
+    if(eventStart){
+     start = eventStart;
+    }
+    else
+    start = startOfDay(new Date());
 
     const meeting = {
 
       text: 'New event',
       day: "test",
       reminder: true,
-      start: startOfDay(new Date()),
-      end: startOfDay(new Date()),
+      start: start,
+      end: start,
       users:[],
       color:colors.red
     }
@@ -432,8 +444,8 @@ export class DemoComponent {
       const newEvent:CalendarEvent = {
         id: meeting.id,
         title: 'New event',
-        start: startOfDay(new Date()),
-        end: endOfDay(new Date()),
+        start: start,
+        end: start,
         color: colors.red,
         draggable: true,
         resizable: {
@@ -449,6 +461,7 @@ export class DemoComponent {
 
       this.events.push(newEvent);
       this.handleEvent('Edited',newEvent);
+      this.refresh.next();
 
 
     }

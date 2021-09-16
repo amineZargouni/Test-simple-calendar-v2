@@ -1,17 +1,54 @@
 {
   "events": [
     {
+      "id": 1,
       "text": "New event",
       "day": "test",
       "reminder": true,
-      "start": "2021-09-03T23:00:00.000Z",
-      "end": "2021-09-03T23:00:00.000Z",
+      "start": "2021-09-21T23:00:00.000Z",
+      "end": "2021-09-21T23:00:00.000Z",
       "users": [],
       "color": {
         "primary": "#ad2121",
         "secondary": "#FAE3E3"
-      },
-      "id": 1
+      }
+    },
+    {
+      "id": 2,
+      "text": "New event",
+      "day": "test",
+      "reminder": true,
+      "start": "2021-09-14T04:00:00.000Z",
+      "end": "2021-09-14T04:30:00.000Z",
+      "users": [
+        {
+          "id": 7,
+          "name": "rami",
+          "phoneNumber": "+21622968667"
+        },
+        {
+          "id": 1,
+          "name": "amine",
+          "phoneNumber": "+21623639895"
+        }
+      ],
+      "color": {
+        "primary": "#3c41dd",
+        "secondary": "#FAE3E3"
+      }
+    },
+    {
+      "id": 7,
+      "text": "New event",
+      "day": "test",
+      "reminder": true,
+      "start": "2021-09-15T23:00:00.000Z",
+      "end": "2021-09-17T23:00:00.000Z",
+      "users": [],
+      "color": {
+        "primary": "#ad2121",
+        "secondary": "#FAE3E3"
+      }
     }
   ],
   "users": [
@@ -42,6 +79,11 @@
       "id": 6,
       "name": "feriel",
       "phoneNumber": "+21623639895"
+    },
+    {
+      "id": 7,
+      "name": "rami",
+      "phoneNumber": "+21622968667"
     }
   ]
 }
