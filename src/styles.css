@@ -14,24 +14,21 @@
 
 
 
-  .cal-events{
-   
-  }
-  .cal-event{
-   
-  }
+  
   .cal-month-view .cal-event {
-    width: 80px !important; 
-    height: 10px;
-     border-radius:0 !important; 
+    width: auto !important; 
+    height: auto !important;
+    border-radius:7% !important; 
     display: inline-block;
     margin: 2px;
     display: block !important;
-    display: inline !important;
     margin-bottom: 40px !important;
     line-height: normal;
+    padding: 10px 5px;
     
 }
+
+
 
 
 .mat-form-field {

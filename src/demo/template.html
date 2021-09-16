@@ -46,17 +46,17 @@
 
   </div>
   <div class="cal-events" *ngIf="day.events.length > 0">
-    <div class="cal-event" *ngFor="let event of day.events" [style.backgroundColor]="'white'"
+    <div class="cal-event" *ngFor="let event of day.events" 
       [ngClass]="event?.cssClass" (mouseenter)="highlightDay.emit({event: event})"
       (mouseleave)="unhighlightDay.emit({event: event})"
       [mwlCalendarTooltip]="event.title | calendarEventTitle:'monthTooltip':event" [tooltipPlacement]="tooltipPlacement"
       [tooltipEvent]="event" [tooltipTemplate]="tooltipTemplate" [tooltipAppendToBody]="tooltipAppendToBody"
-      style="color: black;" mwlDraggable [class.cal-draggable]="event.draggable" dragActiveClass="cal-drag-active"
+      style="color: black; background-color: rgb(245, 228, 244) !important; " mwlDraggable [class.cal-draggable]="event.draggable" dragActiveClass="cal-drag-active"
       [dropData]="{event: event}" [dragAxis]="{x: event.draggable, y: event.draggable}">
       {{event.title}}
-      <i class="fas fa-fw fa-pencil-alt" style="cursor: pointer;"
+      <i class="fas fa-fw fa-pencil-alt" style="cursor: pointer;color:blue"
         (click)="handleEvent('Edited', event);refresh.next()"></i>
-      <i class="fas fa-fw fa-trash-alt" style="cursor: pointer;" (click)="deleteEvent(event);"></i>
+      <i class="fas fa-fw fa-trash-alt" style="cursor: pointer;color: red;" (click)="deleteEvent(event);"></i>
 
     </div>
 

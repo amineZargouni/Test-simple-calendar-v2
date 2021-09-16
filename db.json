@@ -5,8 +5,8 @@
       "text": "testEvent",
       "day": "test",
       "reminder": true,
-      "start": "2021-09-07T07:00:00.000Z",
-      "end": "2021-09-07T09:00:00.000Z",
+      "start": "2021-09-15T07:00:00.000Z",
+      "end": "2021-09-15T09:00:00.000Z",
       "users": [
         {
           "id": 1,
@@ -20,19 +20,6 @@
       ],
       "color": {
         "primary": "#2138ab",
-        "secondary": "#FAE3E3"
-      }
-    },
-    {
-      "id": 2,
-      "text": "New event",
-      "day": "test",
-      "reminder": true,
-      "start": "2021-09-10T00:00:00.000Z",
-      "end": "2021-09-10T00:30:00.000Z",
-      "users": [],
-      "color": {
-        "primary": "#ad2121",
         "secondary": "#FAE3E3"
       }
     }
